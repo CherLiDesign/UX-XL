@@ -89,7 +89,7 @@
       min-height: 100vh;
       display: flex; align-items: center;
       background: linear-gradient(135deg, #E0F1F2 0%, #e8f4f8 40%, #F7E6F3 100%);
-      padding-top: 0;
+      padding-top: 80px;
       position: relative;
       overflow: hidden;
     }
@@ -131,12 +131,13 @@
     .hero-stat-label { font-size: 13px; color: #888; margin-top: 8px; font-weight: 500; }
     .hero-visual {
       position: relative; z-index: 2;
-      border-radius: 0; overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-      transform: perspective(1000px) rotateY(-3deg);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: none;
       transition: transform 0.6s ease;
+      max-width: 90%;
+      margin-left: auto;
     }
-    .hero-visual:hover { transform: perspective(1000px) rotateY(0deg) scale(1.05); }
+    .hero-visual:hover { transform: scale(1.02); }
 
     /* ===== OVERVIEW ===== */
     .overview {
@@ -780,7 +781,7 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="container" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: center;">
+  <div class="container" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; align-items: center;">
     <div class="hero-content">
       <h1>Redesigning Newsletter for the <span class="highlight">AI Era</span></h1>
       <p class="hero-sub" style="margin-bottom: 32px;">As the lead product designer, I redefined Newsletter from a <span style="text-decoration: line-through; color: #999;">static reporting tool</span> into an <strong><span style="background: linear-gradient(to top, rgba(155,31,136,0.3) 30%, transparent 30%); padding: 0 2px;">engagement infrastructure</span></strong> &mdash; transforming a 46-step workflow into an AI-powered experience and driving a <strong><span style="background: linear-gradient(to top, rgba(155,31,136,0.3) 30%, transparent 30%); padding: 0 2px;">53% CES improvement</span></strong>.</p>
@@ -800,7 +801,7 @@
       </div>
     </div>
     <div class="hero-visual" style="transform: none;">
-      <img src="preview.png" alt="Newsletter Redesign Preview">
+      <img src="../images/meltwater.png" alt="Newsletter Redesign Preview">
     </div>
   </div>
 </section>

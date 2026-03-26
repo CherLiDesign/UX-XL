@@ -155,8 +155,9 @@
     .hero-visual {
       position: relative; z-index: 2;
       border-radius: 16px; overflow: hidden;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.1);
+      box-shadow: none;
       transition: transform 0.6s ease;
+      max-width: 90%; margin-left: auto;
     }
     .hero-visual:hover { transform: scale(1.02); }
 
@@ -199,7 +200,7 @@
 
     /* ===== PHASE / GENERIC SECTION ===== */
     .phase { padding: 80px 0; background: #fff; }
-    .phase.alt { background: #F7F8FA; }
+    .phase.alt { background: #fff; }
     .phase-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
       align-items: center; margin-top: 48px;
@@ -259,14 +260,18 @@
     /* ===== TESTING SECTION (DARK) ===== */
     .testing-section {
       padding: 80px 0;
-      background: linear-gradient(135deg, #1a2332 0%, #1e2d3d 100%);
-      color: #fff;
+      background: linear-gradient(150deg, #E0F7FA 0%, #ebf7f8 35%, #E8F5E9 70%, #f0faf2 100%);
+      color: #1a1a2e;
     }
-    .testing-section .section-label { color: #66BB6A; }
-    .testing-section .section-title { color: #fff; }
+    .testing-section .section-label { color: #3B8EAD; }
+    .testing-section .section-title { color: #1a1a2e; }
     .testing-section .full-img { background: rgba(255,255,255,0.03); box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
 
     /* ===== TESTING TABLE ===== */
+    .test-table-title {
+      text-align: center; font-size: 18px; font-weight: 700;
+      color: #1a1a2e; padding: 20px 16px 12px;
+    }
     .test-table-wrap {
       max-width: 560px; margin: 40px auto 0;
       border-radius: 16px; overflow: hidden;
@@ -286,6 +291,9 @@
     }
     .test-table thead th:first-child {
       text-align: left; color: #1a1a2e; font-size: 15px; padding-left: 24px;
+    }
+    .test-table thead th:last-child {
+      color: #3DA06B;
     }
     .test-table tbody td {
       padding: 18px 16px; text-align: center;
@@ -342,8 +350,8 @@
     }
     .step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
     .step-card img {
-      width: 100%; border-radius: 8px; margin-top: 12px;
-      border: 1px solid rgba(0,0,0,0.04);
+      width: 100%; margin-top: 12px;
+      border: none;
     }
 
     /* ===== GIF DEMOS ===== */
@@ -402,7 +410,6 @@
     .full-img {
       border-radius: 12px; overflow: hidden;
       cursor: pointer; transition: transform 0.3s ease;
-      max-width: 900px;
       margin-left: auto; margin-right: auto;
     }
     .full-img:hover { transform: scale(1.01); }
@@ -649,7 +656,7 @@
 </section>
 
 <!-- SECTION 2 -->
-<section class="phase" id="data" style="background: #F0FBFD;">
+<section class="phase" id="data" style="background: #fff;">
   <div class="container">
     <div class="section-label fade-up">Section 2</div>
     <div class="section-title fade-up">Data Analysis</div>
@@ -805,7 +812,7 @@
 </section>
 
 <!-- SECTION 6 -->
-<section class="phase" style="background: #F0FBFD;">
+<section class="phase" style="background: #fff;">
   <div class="container">
     <div class="section-label fade-up">Section 6</div>
     <div class="section-title fade-up">Use User Research Findings to Guide the Product Direction</div>
@@ -872,7 +879,7 @@
       <div class="step-card">
         <div class="step-badge">Step 1</div>
         <h3>Order Successful Page</h3>
-        <img src="goals-1.png" alt="Step 1: Order successful goals" style="border-radius: 8px; margin-top: 12px; max-width: 160px;">
+        <img src="goals-1.png" alt="Step 1: Order successful goals" style="border-radius: 8px; margin-top: 12px; max-width: 260px;">
         <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Clearly communicate the rebate value proposition</li>
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Motivate users to enter the sharing flow</li>
@@ -882,7 +889,7 @@
       <div class="step-card">
         <div class="step-badge">Step 2</div>
         <h3>Select Products to Share</h3>
-        <img src="goals-2.png" alt="Step 2: Select products goals" style="border-radius: 8px; margin-top: 12px; max-width: 160px;">
+        <img src="goals-2.png" alt="Step 2: Select products goals" style="border-radius: 8px; margin-top: 12px; max-width: 260px;">
         <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Help users understand the Select &rarr; Share &rarr; Rebates process</li>
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Encourage users to select more products to increase rebate</li>
@@ -892,7 +899,7 @@
       <div class="step-card">
         <div class="step-badge">Step 3</div>
         <h3>Share Menu</h3>
-        <img src="goals-3.png" alt="Step 3: Share menu goals" style="border-radius: 8px; margin-top: 12px; max-width: 160px;">
+        <img src="goals-3.png" alt="Step 3: Share menu goals" style="border-radius: 8px; margin-top: 12px; max-width: 260px; background: transparent; border: none; box-shadow: none;">
         <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Provide multiple sharing channels (WeChat, Moments, Facebook)</li>
           <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Minimize drop-off at the final sharing step</li>
@@ -911,96 +918,21 @@
 
     <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 40px; margin-bottom: 24px;">Step One: Order Successful Page</h3>
     <div class="full-img fade-up" onclick="openLightbox(this)">
-      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610269238153-QZYXDQOLIFI6C5HI07J6/Group+14142.png" alt="Testing: Order successful">
-    </div>
-    <div class="test-table-wrap fade-up">
-      <table class="test-table">
-        <thead>
-          <tr><th>Order Successful</th><th>Old</th><th>A</th><th>B</th><th>C</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Clearly information</td>
-            <td class="s-old">1</td>
-            <td>4</td>
-            <td>3</td>
-            <td class="s-win">5</td>
-          </tr>
-          <tr>
-            <td>Engaging and Intuitive content with CTA</td>
-            <td class="s-old">2</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>Simply and clear layout</td>
-            <td class="s-old">4</td>
-            <td class="s-win">5</td>
-            <td>4</td>
-            <td class="s-win">5</td>
-          </tr>
-          <tr>
-            <td>Result</td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-pass">&#10003;</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <img src="step-1.png" alt="Testing: Order successful">
     </div>
 
     <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Step Two: Select Products to Share</h3>
     <div class="full-img fade-up" onclick="openLightbox(this)">
-      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610269301369-X05S4M51D4PR6HUFNN1L/Group+14150.png" alt="Testing: Select products">
-    </div>
-    <div class="test-table-wrap fade-up">
-      <table class="test-table">
-        <thead>
-          <tr><th>Select products to share</th><th>Old</th><th>A</th><th>B</th><th>C</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Clearly Progress Bar</td>
-            <td class="s-old">1</td>
-            <td>4</td>
-            <td>3</td>
-            <td class="s-win">5</td>
-          </tr>
-          <tr>
-            <td>Engaging and Intuitive content with CTA</td>
-            <td class="s-old">1</td>
-            <td>4</td>
-            <td>4</td>
-            <td class="s-win">6</td>
-          </tr>
-          <tr>
-            <td>Simply and clear layout</td>
-            <td class="s-old">0</td>
-            <td>4</td>
-            <td>4</td>
-            <td class="s-win">6</td>
-          </tr>
-          <tr>
-            <td>Result</td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-fail">&#10005;</span></td>
-            <td><span class="result-pass">&#10003;</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <img src="step-2.png" alt="Testing: Select products">
     </div>
 
     <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Step Three: Share Menu</h3>
     <div class="full-img fade-up" onclick="openLightbox(this)">
-      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1634937730229-0VICCWZUO99KJ29M1R70/Group+14151.png" alt="Testing: Share menu">
+      <img src="step-3.png" alt="Testing: Share menu">
     </div>
-
     <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Add Two Steps for the Entire Flow</h3>
     <div class="full-img fade-up" onclick="openLightbox(this)">
-      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610270421900-N3N07IITZSFZXDBGUJW9/Group+14153.png" alt="Additional flow steps">
+      <img src="step-4.png" alt="Additional flow steps">
     </div>
   </div>
 </section>
@@ -1009,31 +941,28 @@
 <section class="testing-section">
   <div class="container">
     <div class="section-label fade-up">Section 10</div>
-    <div class="section-title fade-up" style="color: #fff;">Previous Design VS Final Design</div>
-    <p class="section-desc fade-up" style="color: rgba(255,255,255,0.75);">After the previous testing, another iteration was performed. The results of this iteration helped plan for usability testing with four additional participants. The purpose of this test was to ask them to share their purchase orders. Based on their feedback, the final version of the design was delivered. All designs were instrumental in helping meet the project's goals and ensuring outstanding performance after launching.</p>
-    <div class="full-img fade-up" style="margin-top: 40px;" onclick="openLightbox(this)">
-      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610271033803-0C7TMFRXHPRXTQUVMXEA/Group+14152.png" alt="Previous vs final design">
-    </div>
-
-    <div class="test-table-wrap fade-up" style="max-width: 640px; margin-top: 48px;">
-      <div style="padding: 20px 24px 12px; background: rgba(61,160,107,0.06); border-bottom: 2px solid rgba(61,160,107,0.12);">
-        <h4 style="font-size: 16px; font-weight: 700; color: #3DA06B; text-align: center; margin: 0;">Final Usability Testing Results (4 Users)</h4>
+    <div class="section-title fade-up">Previous Design VS Final Design</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 24px;">
+      <p class="section-desc fade-up">After the previous testing, another iteration was performed. The results of this iteration helped plan for usability testing with four additional participants. The purpose of this test was to ask them to share their purchase orders. Based on their feedback, the final version of the design was delivered. All designs were instrumental in helping meet the project's goals and ensuring outstanding performance after launching.</p>
+      <div class="test-table-wrap fade-up">
+        <div style="padding: 20px 24px 12px; background: rgba(61,160,107,0.06); border-bottom: 2px solid rgba(61,160,107,0.12);">
+          <h4 style="font-size: 16px; font-weight: 700; color: #3DA06B; text-align: center; margin: 0;">Final Usability Testing Results (4 Users)</h4>
+        </div>
+        <table class="test-table">
+          <thead>
+            <tr><th>Share your order project's goal</th><th>Clearly information</th><th>Engaging and Intuitive</th><th>Simply and clear layout</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Result</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <table class="test-table">
-        <thead>
-          <tr><th>Share your order project's goal</th><th>Clearly information</th><th>Engaging and Intuitive</th><th>Simply and clear layout</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Result</td>
-            <td><span class="result-pass">&#10003;</span> 4/4 users</td>
-            <td><span class="result-pass">&#10003;</span> 4/4 users</td>
-            <td><span class="result-pass">&#10003;</span> 4/4 users</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-
     <div class="full-img fade-up" style="margin-top: 40px;" onclick="openLightbox(this)">
       <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610429489536-8AC9K8K8YE27BMDVZH6E/iMac+-+2.png" alt="Desktop mockup">
     </div>
@@ -1041,22 +970,24 @@
 </section>
 
 <!-- SECTION 11 -->
-<section class="phase" id="interactions" style="background: #F0FBFD;">
+<section class="phase" id="interactions" style="background: linear-gradient(135deg, #1a2332 0%, #1e2d3d 100%); color: #fff;">
   <div class="container">
-    <div class="section-label fade-up">Section 11</div>
-    <div class="section-title fade-up">Interactions</div>
-    <div class="gif-grid">
-      <div class="gif-card fade-up">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604207188075-6D4V2H7GWRC1P4K5D70L/1-2-2+2.gif" alt="Order successful">
-        <div class="gif-card-label">Order Successful</div>
+    <div class="section-label fade-up" style="color: #66BB6A;">Section 11</div>
+    <div class="section-title fade-up" style="color: #fff;">Interactions</div>
+  </div>
+  <div style="max-width: 1600px; margin: 48px auto 0; padding: 0 64px;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+      <div class="fade-up" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 24px;">Order Successful</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604207188075-6D4V2H7GWRC1P4K5D70L/1-2-2+2.gif" alt="Order successful" style="width: 100%;">
       </div>
-      <div class="gif-card fade-up delay-1">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604297713353-256J1UPMFJ17QM11LHTP/0001-3-2.gif" alt="Select products">
-        <div class="gif-card-label">Select Products to Share</div>
+      <div class="fade-up delay-1" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 24px;">Select Products to Share</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604297713353-256J1UPMFJ17QM11LHTP/0001-3-2.gif" alt="Select products" style="width: 100%;">
       </div>
-      <div class="gif-card fade-up delay-2">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604295136817-NWZDZDTRNWLPIACNCKQL/001-4.gif" alt="Share menu">
-        <div class="gif-card-label">Share Menu</div>
+      <div class="fade-up delay-2" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 24px;">Share Menu</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604295136817-NWZDZDTRNWLPIACNCKQL/001-4.gif" alt="Share menu" style="width: 100%;">
       </div>
     </div>
   </div>
@@ -1074,7 +1005,7 @@
 </section>
 
 <!-- SECTION 13 -->
-<section class="phase" id="reflections" style="background: #F0FBFD;">
+<section class="phase" id="reflections" style="background: #fff;">
   <div class="container">
     <div class="section-label fade-up">Section 13</div>
     <div class="section-title fade-up">Reflections</div>
