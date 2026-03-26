@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xuan Li — Senior Product Designer</title>
+  <meta name="description" content="Xuan (Cher) Li — Senior Product Designer with 7+ years of experience based in the Bay Area.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ===== HEADER / NAV ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 16px 3vw;
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .logo {
+      justify-self: center;
+    }
+
+    .logo a {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      width: auto;
+    }
+
+    .nav-right {
+      justify-self: end;
+    }
+
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-item {
+      position: relative;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      padding: 6px 0;
+    }
+
+    .nav-item:hover {
+      opacity: 0.7;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      padding: 6px 0;
+      background: none;
+      border: none;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .dropdown-trigger:hover {
+      opacity: 0.7;
+    }
+
+    .dropdown-trigger svg {
+      width: 10px;
+      height: 10px;
+      transition: transform 0.2s;
+    }
+
+    .dropdown:hover .dropdown-trigger svg {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: -16px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 180px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: all 0.2s ease;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #333;
+      transition: background 0.15s;
+    }
+
+    .dropdown-menu a:hover {
+      background: #f5f5f5;
+    }
+
+    .nav-social {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    .nav-social a:hover {
+      border-color: #999;
+    }
+
+    .nav-social svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #1a1a1a;
+      transition: all 0.3s;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 200;
+      padding: 24px;
+      flex-direction: column;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 40px;
+    }
+
+    .mobile-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .mobile-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mobile-menu-links a {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .mobile-menu-links .sub-link {
+      padding-left: 20px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #555;
+    }
+
+    .mobile-menu-social {
+      margin-top: auto;
+      display: flex;
+      gap: 16px;
+      padding-bottom: 40px;
+    }
+
+    .mobile-menu-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 80px 3vw 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(36px, 4vw, 54px);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .hero-text .subtitle {
+      font-size: clamp(20px, 2vw, 28px);
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .hero-tag {
+      font-size: clamp(16px, 1.5vw, 22px);
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .hero-text .extra {
+      font-size: clamp(16px, 1.4vw, 18px);
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .hero-text .extra a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      color: #333;
+      transition: opacity 0.2s;
+    }
+
+    .hero-text .extra a:hover {
+      opacity: 0.6;
+    }
+
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 620px;
+      border-radius: 8px;
+    }
+
+    /* ===== QUOTE SECTION ===== */
+    .quote-section {
+      position: relative;
+      overflow: hidden;
+      padding: 80px 3vw;
+      text-align: center;
+      background: #f8e8f0;
+    }
+
+    .quote-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .quote-bg .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.7;
+    }
+
+    .quote-bg .blob1 {
+      width: 500px;
+      height: 500px;
+      background: #c8f5a0;
+      top: -100px;
+      left: 10%;
+      animation: blobMove1 8s ease-in-out infinite alternate;
+    }
+
+    .quote-bg .blob2 {
+      width: 400px;
+      height: 400px;
+      background: #f5c8e0;
+      bottom: -80px;
+      right: 10%;
+      animation: blobMove2 10s ease-in-out infinite alternate;
+    }
+
+    .quote-bg .blob3 {
+      width: 300px;
+      height: 300px;
+      background: #d4f0a0;
+      top: 50%;
+      left: 40%;
+      transform: translate(-50%, -50%);
+      animation: blobMove3 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes blobMove1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(80px, 40px) scale(1.15); }
+    }
+
+    @keyframes blobMove2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-60px, -30px) scale(1.1); }
+    }
+
+    @keyframes blobMove3 {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-30%, -40%) scale(1.2); }
+    }
+
+    .quote-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .quote-section blockquote {
+      font-size: clamp(24px, 3.5vw, 48px);
+      font-weight: 600;
+      font-style: normal;
+      color: #1a1a1a;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    .quote-section .quote-author {
+      font-size: clamp(14px, 1.2vw, 18px);
+      color: #555;
+      font-weight: 400;
+    }
+
+    /* ===== WORK PROJECTS SECTION ===== */
+    .work-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 3vw 80px;
+    }
+
+    .work-header {
+      margin-bottom: 48px;
+    }
+
+    .work-header h2 {
+      font-size: clamp(24px, 2.5vw, 34px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .work-header p {
+      font-size: clamp(15px, 1.3vw, 18px);
+      color: #555;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .project-card {
+      display: block;
+      border-radius: 21px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+
+    .project-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 40px 3vw;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: #777;
+      font-weight: 500;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    .footer-social a:hover {
+      border-color: #999;
+    }
+
+    .footer-social svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .nav-desktop {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 50px 5vw 40px;
+      }
+
+      .hero-image {
+        order: -1;
+      }
+
+      .hero-image img {
+        max-width: 400px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .work-section {
+        padding: 30px 5vw 60px;
+      }
+
+      .quote-section {
+        padding: 40px 5vw;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        padding: 12px 5vw;
+      }
+
+      .hero {
+        padding: 36px 5vw 30px;
+      }
+
+      .hero-text h1 {
+        font-size: 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="nav-left">
+        <div class="dropdown">
+          <button class="dropdown-trigger">
+            PROJECTS
+            <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="meltwater.html">1. Meltwater</a>
+            <a href="weee.html">2. Weee!</a>
+            <a href="bogo.html">3. Bogo</a>
+            <a href="classpass.html">4. ClassPass</a>
+            <a href="others.html">5. Others</a>
+          </div>
+        </div>
+
+        <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
+      </div>
+
+      <div class="logo">
+        <a href="/">
+          <img src="images/logo.png" alt="Xuan Li">
+        </a>
+      </div>
+
+      <div class="nav-right">
+        <div class="nav-social">
+          <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.add('active')" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <button class="mobile-close" onclick="document.getElementById('mobileMenu').classList.remove('active')" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="meltwater.html" class="sub-link">1. Meltwater</a>
+      <a href="weee.html" class="sub-link">2. Weee!</a>
+      <a href="bogo.html" class="sub-link">3. Bogo</a>
+      <a href="classpass.html" class="sub-link">4. ClassPass</a>
+      <a href="others.html" class="sub-link">5. Others</a>
+      <a href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">Resume</a>
+    </div>
+    <div class="mobile-menu-social">
+      <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>👋 I'm <strong>Xuan (Cher) Li</strong></h1>
+      <p class="subtitle">a <strong>Senior Product Designer</strong> with 7+ years of experience based in the Bay Area.</p>
+
+      <div class="hero-tags">
+        <span class="hero-tag">🚀 Product Innovation Leader</span>
+        <span class="hero-tag">🤝 Cross-Functional Team Player</span>
+        <span class="hero-tag">📊 Data-Driven (Quant + Qual)</span>
+        <span class="hero-tag">🤖 AI Builder &amp; Coder</span>
+      </div>
+
+      <p class="extra">
+        I am also an <a href="https://www.sfweekly.com/marketplace/from-sculpture-to-technology-art-metacher-s-art-journey-going-worldwide/article_9bc0abda-3d4a-11ee-a379-a7cb0273a0b6.html" target="_blank" rel="noopener">artist</a> &amp; <a href="https://soundcloud.com/metacher/tracks" target="_blank" rel="noopener">experimental musician</a>.
+      </p>
+    </div>
+
+    <div class="hero-image">
+      <img src="images/profile.png" alt="Xuan (Cher) Li — Senior Product Designer" loading="lazy">
+    </div>
+  </section>
+
+  <!-- QUOTE SECTION -->
+  <section class="quote-section">
+    <div class="quote-bg">
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+    </div>
+    <div class="quote-content">
+      <blockquote>&ldquo;A problem well stated is a problem half solved&rdquo;</blockquote>
+      <p class="quote-author">— Charles Kettering</p>
+    </div>
+  </section>
+
+  <!-- WORK PROJECTS -->
+  <section class="work-section">
+    <div class="work-header">
+      <h2>Work projects</h2>
+      <p>Find out about my works: read through my case studies, have a look at final designs.</p>
+    </div>
+
+    <div class="projects-grid">
+      <a class="project-card" href="meltwater.html">
+        <img src="images/meltwater.png" alt="Meltwater — Case Study" loading="lazy">
+      </a>
+      <a class="project-card" href="weee.html">
+        <img src="images/weee.png" alt="Weee! — Case Study" loading="lazy">
+      </a>
+      <a class="project-card" href="bogo.html">
+        <img src="images/bogo.png" alt="Bogo — Case Study" loading="lazy">
+      </a>
+      <a class="project-card" href="classpass.html">
+        <img src="images/classpass.png" alt="ClassPass — Case Study" loading="lazy">
+      </a>
+      <a class="project-card" href="others.html">
+        <img src="images/others.png" alt="Other Projects" loading="lazy">
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; 2026 Xuan Li</p>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+        <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
