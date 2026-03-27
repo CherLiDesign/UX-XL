@@ -594,11 +594,7 @@
       display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px;
       margin-top: 64px; position: relative;
     }
-    .process-timeline::before {
-      content: ''; position: absolute;
-      top: 40px; left: 60px; right: 60px;
-      height: 2px; background: #e5e5e5;
-    }
+    .process-timeline::before { display: none; }
     .process-step { text-align: center; position: relative; }
     .process-dot {
       width: 24px; height: 24px; border-radius: 50%;
