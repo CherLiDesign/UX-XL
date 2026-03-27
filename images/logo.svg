@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" width="120" height="100">
+  <!-- X -->
+  <path d="M8 12 L28 48 L8 84" stroke="#1a1a2e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M48 12 L28 48 L48 84" stroke="#1a1a2e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Checkmark -->
+  <path d="M56 52 L72 72 L108 18" stroke="#1a1a2e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- .DESIGN text -->
+  <text x="60" y="98" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e" text-anchor="middle" letter-spacing="2">.DESIGN</text>
+</svg>
