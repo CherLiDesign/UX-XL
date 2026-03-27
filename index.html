@@ -39,68 +39,35 @@
       display: block;
     }
 
-    /* ===== HEADER / NAV ===== */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 16px 3vw;
-    }
-
-    .header-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+    /* ===== NAV (matches site-wide system) ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 48px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
       align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
     }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 32px;
+    .nav.scrolled { padding: 12px 48px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav-logo { justify-self: center; }
+    .nav-logo a { display: flex; align-items: center; }
+    .nav-logo img { height: 50px; width: auto; }
+    .nav-left { display: flex; align-items: center; gap: 32px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+    .nav-right a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border: 1px solid #ddd;
+      border-radius: 50%; transition: all 0.2s;
     }
-
-    .logo {
-      justify-self: center;
-    }
-
-    .logo a {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      height: 50px;
-      width: auto;
-    }
-
-    .nav-right {
-      justify-self: end;
-    }
-
-    .nav-desktop {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
+    .nav-right a:hover { border-color: #999; }
+    .nav-right svg { width: 14px; height: 14px; }
     .nav-item {
-      position: relative;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      cursor: pointer;
-      padding: 6px 0;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      cursor: pointer; padding: 6px 0;
     }
-
-    .nav-item:hover {
-      opacity: 0.7;
-    }
+    .nav-item:hover { opacity: 0.7; }
 
     /* Dropdown */
     .dropdown {
@@ -171,31 +138,6 @@
       background: #f5f5f5;
     }
 
-    .nav-social {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-social a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border: 1px solid #ddd;
-      border-radius: 50%;
-      transition: all 0.2s;
-    }
-
-    .nav-social a:hover {
-      border-color: #999;
-    }
-
-    .nav-social svg {
-      width: 14px;
-      height: 14px;
-    }
 
     /* Hamburger (mobile) */
     .hamburger {
@@ -288,7 +230,7 @@
     .hero {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 80px 3vw 60px;
+      padding: 120px 3vw 60px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
@@ -535,18 +477,15 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
-      .nav-desktop {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
+      .nav { padding: 14px 24px; }
+      .nav-left, .nav-right, .nav-logo { display: none; }
+      .hamburger { display: flex; }
+      .nav { display: flex; justify-content: flex-end; }
 
       .hero {
         grid-template-columns: 1fr;
         gap: 40px;
-        padding: 50px 5vw 40px;
+        padding: 100px 5vw 40px;
       }
 
       .hero-image {
@@ -572,12 +511,8 @@
     }
 
     @media (max-width: 600px) {
-      .header {
-        padding: 12px 5vw;
-      }
-
       .hero {
-        padding: 36px 5vw 30px;
+        padding: 90px 5vw 30px;
       }
 
       .hero-text h1 {
@@ -594,57 +529,39 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-inner">
-      <div class="nav-left">
-        <div class="dropdown">
-          <button class="dropdown-trigger">
-            PROJECTS
-            <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="meltwater/meltwaterindex.html">1. Meltwater</a>
-            <a href="Weee!-present/index.html">2. Weee!</a>
-            <a href="bogo-present/index.html">3. Bogo</a>
-            <a href="ClassPass-present/classpassindex.html">4. ClassPass</a>
-            <a href="others.html">5. Others</a>
-          </div>
-        </div>
-
-        <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
-      </div>
-
-      <div class="logo">
-        <a href="/">
-          <img src="images/logo.png" alt="Xuan Li">
-        </a>
-      </div>
-
-      <div class="nav-right">
-        <div class="nav-social">
-          <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-          </a>
-          <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-          </a>
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-left">
+      <div class="dropdown">
+        <button class="dropdown-trigger">
+          PROJECTS
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dropdown-menu">
+          <a href="meltwater/meltwaterindex.html">1. Meltwater</a>
+          <a href="Weee!-present/index.html">2. Weee!</a>
+          <a href="bogo-present/index.html">3. Bogo</a>
+          <a href="ClassPass-present/classpassindex.html">4. ClassPass</a>
+          <!-- <a href="others.html">5. Others</a> -->
         </div>
       </div>
-
-      <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.add('active')" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
     </div>
-  </header>
+    <div class="nav-logo">
+      <a href="index.html"><img src="images/logo.png" alt="Xuan Li" style="height: 50px;"></a>
+    </div>
+    <div class="nav-right">
+      <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+    <button class="hamburger" id="navHamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
@@ -656,7 +573,7 @@
       <a href="Weee!-present/index.html" class="sub-link">2. Weee!</a>
       <a href="bogo-present/index.html" class="sub-link">3. Bogo</a>
       <a href="ClassPass-present/classpassindex.html" class="sub-link">4. ClassPass</a>
-      <a href="others.html" class="sub-link">5. Others</a>
+      <!-- <a href="others.html" class="sub-link">5. Others</a> -->
       <a href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">Resume</a>
     </div>
     <div class="mobile-menu-social">
@@ -729,9 +646,9 @@
       <a class="project-card" href="ClassPass-present/classpassindex.html">
         <img src="images/classpass.png" alt="ClassPass — Case Study" loading="lazy">
       </a>
-      <a class="project-card" href="others.html">
+      <!-- <a class="project-card" href="others.html">
         <img src="images/others.png" alt="Other Projects" loading="lazy">
-      </a>
+      </a> -->
     </div>
   </section>
 
@@ -753,6 +670,20 @@
       </div>
     </div>
   </footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('navHamburger');
+  hamburger.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('active');
+  });
+</script>
 
 </body>
 </html>

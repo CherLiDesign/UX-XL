@@ -19,23 +19,30 @@
     img { max-width: 100%; height: auto; display: block; }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== NAV (homepage style) ===== */
-    .header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    /* ===== NAV (matches Weee! system) ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 48px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0,0,0,0.06);
-      padding: 16px 3vw;
+      transition: all 0.3s ease;
     }
-    .header-inner {
-      max-width: 1400px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-    }
+    .nav.scrolled { padding: 12px 48px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav-logo { justify-self: center; }
+    .nav-logo a { display: flex; align-items: center; }
+    .nav-logo img { height: 50px; width: auto; }
     .nav-left { display: flex; align-items: center; gap: 32px; }
-    .logo { justify-self: center; }
-    .logo a { display: flex; align-items: center; }
-    .logo img { height: 50px; width: auto; }
-    .nav-right { justify-self: end; }
+    .nav-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+    .nav-right a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border: 1px solid #ddd;
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .nav-right a:hover { border-color: #999; }
+    .nav-right svg { width: 14px; height: 14px; }
     .nav-item { font-size: 14px; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; padding: 6px 0; }
     .nav-item:hover { opacity: 0.7; }
     .dropdown { position: relative; }
@@ -58,13 +65,6 @@
     .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-menu a { display: block; padding: 8px 20px; font-size: 13px; font-weight: 400; color: #333; transition: background 0.15s; }
     .dropdown-menu a:hover { background: #f5f5f5; }
-    .nav-social { display: flex; align-items: center; gap: 12px; }
-    .nav-social a {
-      display: flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 50%; transition: all 0.2s;
-    }
-    .nav-social a:hover { border-color: #999; }
-    .nav-social svg { width: 14px; height: 14px; }
 
     /* ===== SECTIONS ===== */
     section { position: relative; }
@@ -132,8 +132,10 @@
     .hero-visual {
       position: relative; z-index: 2;
       border-radius: 16px; overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+      box-shadow: none;
       transition: transform 0.6s ease;
+      max-width: 90%;
+      margin-left: auto;
     }
     .hero-visual:hover { transform: scale(1.02); }
 
@@ -173,33 +175,54 @@
     }
     .info-card p { font-size: 15px; color: #555; line-height: 1.6; }
 
-    /* ===== BEFORE/AFTER ===== */
+    /* ===== BEFORE/AFTER SLIDER ===== */
     .preview-section {
       padding: 100px 0;
       background: linear-gradient(180deg, #faf8fc 0%, #fff 100%);
     }
-    .ba-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-      margin-top: 48px;
+    .ba-slider-wrap {
+      position: relative;
+      max-width: 100%;
+      margin: 48px auto 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+      aspect-ratio: 2/1;
+      user-select: none;
+      cursor: ew-resize;
     }
-    .ba-card {
-      border-radius: 16px; overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transition: all 0.4s ease;
-      cursor: pointer;
+    .ba-slider-wrap img {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; object-fit: cover;
     }
-    .ba-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    .ba-slider-wrap .ba-after { clip-path: inset(0 0 0 50%); z-index: 2; }
+    .ba-slider-wrap .ba-before { z-index: 1; }
+    .ba-slider-handle {
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; width: 3px;
+      background: #fff; z-index: 3;
+      transform: translateX(-50%);
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
     }
-    .ba-label {
-      padding: 12px 20px; font-size: 13px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1px;
+    .ba-slider-handle::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+      background: #fff; border-radius: 50%;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23555'%3E%3Cpolygon points='8,5 3,12 8,19'/%3E%3Cpolygon points='16,5 21,12 16,19'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
     }
-    .ba-label.before { background: #fee2e2; color: #dc2626; }
-    .ba-label.after { background: #d1fae5; color: #059669; }
-    .ba-card img { width: 100%; }
+    .ba-slider-label {
+      position: absolute; top: 16px; z-index: 4;
+      padding: 6px 16px; border-radius: 100px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .ba-slider-label.after-label { left: 16px; background: #d1fae5; color: #059669; }
+    .ba-slider-label.before-label { right: 16px; background: #fee2e2; color: #dc2626; }
 
     /* ===== KEY INSIGHTS ===== */
     .insights {
@@ -328,6 +351,9 @@
     }
     .lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
+    /* ===== PROJECT CARDS ===== */
+    .project-cards .project-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.12) !important; }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 968px) {
       .container { padding: 0 24px; }
@@ -335,8 +361,9 @@
       .hero-visual { transform: none; }
       .overview-grid { grid-template-columns: 1fr; }
       .info-cards { grid-template-columns: 1fr; }
-      .ba-grid { grid-template-columns: 1fr; }
+      .ba-slider-wrap { aspect-ratio: auto; min-height: 300px; }
       .hero-stats { gap: 32px; }
+      .project-cards { grid-template-columns: 1fr !important; }
     }
     @media (max-width: 600px) {
       .hero-stats { flex-wrap: wrap; gap: 24px; }
@@ -346,47 +373,33 @@
 <body>
 
 <!-- NAV -->
-<header class="header">
-  <div class="header-inner">
-    <div class="nav-left">
-      <div class="dropdown">
-        <button class="dropdown-trigger">
-          PROJECTS
-          <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="dropdown-menu">
-          <a href="../meltwater/meltwaterindex.html">1. Meltwater</a>
-          <a href="../Weee!-present/index.html">2. Weee!</a>
-          <a href="../bogo-present/index.html">3. Bogo</a>
-          <a href="classpassindex.html">4. ClassPass</a>
-          <a href="../others.html">5. Others</a>
-        </div>
-      </div>
-      <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
-    </div>
-    <div class="logo">
-      <a href="../index.html">
-        <img src="../images/logo.png" alt="Xuan Li">
-      </a>
-    </div>
-    <div class="nav-right">
-      <div class="nav-social">
-        <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </a>
-        <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </a>
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <div class="dropdown">
+      <button class="dropdown-trigger">
+        PROJECTS
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dropdown-menu">
+        <a href="../meltwater/meltwaterindex.html">1. Meltwater</a>
+        <a href="../Weee!-present/index.html">2. Weee!</a>
+        <a href="../bogo-present/index.html">3. Bogo</a>
+        <a href="classpassindex.html" style="font-weight: 600; color: #1a1a2e;">4. ClassPass</a>
+        <!-- <a href="../others.html">5. Others</a> -->
       </div>
     </div>
+    <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
   </div>
-</header>
+  <div class="nav-logo"><a href="../index.html"><img src="../images/logo.png" alt="Xuan Li" style="height: 50px;"></a></div>
+  <div class="nav-right">
+    <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+</nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
@@ -457,30 +470,25 @@
     <div class="fade-up" style="text-align: center; margin-bottom: 16px;">
       <div class="section-label">Product Preview</div>
       <div class="section-title">Before vs After</div>
+      <p class="section-desc" style="margin: 0 auto;">Click and drag the slider to compare the before and after designs.</p>
     </div>
 
-    <!-- Pair 1 -->
-    <div class="ba-grid fade-up">
-      <div class="ba-card" onclick="openLightbox(this)">
-        <div class="ba-label after">After</div>
-        <img src="images/after-1.jpg" alt="After redesign - Payment page">
-      </div>
-      <div class="ba-card" onclick="openLightbox(this)">
-        <div class="ba-label before">Before</div>
-        <img src="images/before-1.jpg" alt="Before redesign - Payment page">
-      </div>
+    <!-- Pair 1: Payment Page -->
+    <div class="ba-slider-wrap fade-up" data-ba-slider>
+      <img class="ba-before" src="images/before-1.jpg" alt="Before redesign - Payment page">
+      <img class="ba-after" src="images/after-1.jpg" alt="After redesign - Payment page">
+      <div class="ba-slider-handle"></div>
+      <span class="ba-slider-label after-label">After</span>
+      <span class="ba-slider-label before-label">Before</span>
     </div>
 
-    <!-- Pair 2 -->
-    <div class="ba-grid fade-up" style="margin-top: 48px;">
-      <div class="ba-card" onclick="openLightbox(this)">
-        <div class="ba-label after">After</div>
-        <img src="images/after-2.jpg" alt="After redesign - Referral experience">
-      </div>
-      <div class="ba-card" onclick="openLightbox(this)">
-        <div class="ba-label before">Before</div>
-        <img src="images/before-2.jpg" alt="Before redesign - Referral experience">
-      </div>
+    <!-- Pair 2: Referral Experience -->
+    <div class="ba-slider-wrap fade-up" data-ba-slider style="margin-top: 48px;">
+      <img class="ba-before" src="images/before-2.jpg" alt="Before redesign - Referral experience">
+      <img class="ba-after" src="images/after-2.jpg" alt="After redesign - Referral experience">
+      <div class="ba-slider-handle"></div>
+      <span class="ba-slider-label after-label">After</span>
+      <span class="ba-slider-label before-label">Before</span>
     </div>
   </div>
 </section>
@@ -546,11 +554,66 @@
   <img id="lightbox-img" src="" alt="Enlarged view">
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
+<!-- EXPLORE OTHER PROJECTS -->
+<section style="padding: 100px 0; background: #1a1a2e;">
   <div class="container">
-    <h2>Thank You</h2>
-    <p style="margin-top: 8px; color: rgba(255,255,255,0.4);">Designed by Cher &mdash; Product Designer</p>
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div class="section-label" style="color: #FF9800;">More Work</div>
+      <div class="section-title" style="color: #fff;">Explore Other Projects</div>
+    </div>
+    <div class="project-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <!-- Meltwater -->
+      <a href="../meltwater/meltwaterindex.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../images/meltwater.png" alt="Meltwater" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Enterprise SaaS</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Meltwater</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">AI Newsletter &amp; media intelligence redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- Weee! -->
+      <a href="../Weee!-present/index.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/08243bed-80fa-436d-b913-5e11d186b736/1+1225471600.png" alt="Weee!" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">E-Commerce</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Weee!</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">End-to-end share order experience redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- BOGO -->
+      <a href="../bogo-present/index.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/14760955-9edd-4be9-95bd-f75ca9b9067f/4.png" alt="BOGO" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Live Video</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">BOGO</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">Live video streaming app for real-time info.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top: 1px solid rgba(0,0,0,0.08); padding: 40px 48px;">
+  <div style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+    <p style="font-size: 13px; color: #777; font-weight: 500;">&copy; 2026 Xuan Li</p>
+    <div style="display: flex; gap: 12px;">
+      <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 50%; transition: all 0.2s; color: inherit; text-decoration: none;">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:xuanlidesign@gmail.com" aria-label="Email" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 50%; transition: all 0.2s; color: inherit; text-decoration: none;">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -579,6 +642,25 @@
   }
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeLightbox();
+  });
+
+  // ===== BEFORE/AFTER SLIDERS =====
+  document.querySelectorAll('[data-ba-slider]').forEach(slider => {
+    const handle = slider.querySelector('.ba-slider-handle');
+    let isDragging = false;
+    const updateSlider = (x) => {
+      const rect = slider.getBoundingClientRect();
+      let pos = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const pct = pos * 100;
+      handle.style.left = pct + '%';
+      slider.querySelector('.ba-after').style.clipPath = 'inset(0 0 0 ' + pct + '%)';
+    };
+    slider.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+    window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    slider.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); });
+    window.addEventListener('touchend', () => { isDragging = false; });
   });
 
 </script>

@@ -84,7 +84,7 @@
     .nav-item:hover { opacity: 0.7; }
 
     /* ===== LAYOUT ===== */
-    .container { max-width: 1400px; margin: 0 auto; padding: 0 48px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
 
     /* ===== SQUARESPACE GRID (faithful to original) ===== */
     .sqs-row {
@@ -99,6 +99,82 @@
     .sqs-col-2  { width: 16.66%; padding: 0 12px; }
     .sqs-col-7  { width: 58.33%; padding: 0 15px; }
 
+    /* ===== SECTIONS ===== */
+    section { position: relative; }
+    .section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 3px; color: #E85D3A; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .section-desc {
+      font-size: 18px; line-height: 1.7; color: #555;
+      max-width: 640px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(150deg, #FFF3E0 0%, #fff0e8 35%, #FFE0B2 70%, #fff5ec 100%);
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -15%; left: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,93,58,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,152,0,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,93,58,0.1); border-radius: 100px;
+      padding: 8px 20px; font-size: 13px; font-weight: 600;
+      color: #E85D3A; margin-bottom: 28px;
+    }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF9800; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #E85D3A, #FF9800);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 20px; color: #555; line-height: 1.7; margin-bottom: 40px; max-width: 500px;
+    }
+    .hero-stats { display: flex; gap: 48px; }
+    .hero-stat-number {
+      font-size: 48px; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, #E85D3A, #FF9800);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label { font-size: 13px; color: #888; margin-top: 8px; font-weight: 500; }
+    .hero-visual {
+      position: relative; z-index: 2;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      transition: transform 0.6s ease;
+      max-width: 90%; margin-left: auto;
+    }
+    .hero-visual:hover { transform: scale(1.02); }
+
     /* ===== PAGE SECTION ===== */
     .page-section {
       padding: 3vw 0;
@@ -107,34 +183,34 @@
     /* ===== TEXT STYLES (matches Meltwater design system) ===== */
     .sqs-text h2 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3.5vw, 42px);
+      font-size: clamp(32px, 4vw, 52px);
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.15;
       color: #1a1a2e;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     .sqs-text h3 {
-      font-family: 'Inter', -apple-system, sans-serif;
-      font-size: 18px;
+      font-size: 28px;
       font-weight: 700;
-      line-height: 1.5;
+      line-height: 1.4;
       color: #1a1a2e;
-      margin-bottom: 8px;
+      margin-top: 64px;
+      margin-bottom: 28px;
     }
     .sqs-text h4 {
       font-family: 'Inter', -apple-system, sans-serif;
       font-size: 16px;
       font-weight: 400;
       line-height: 1.8;
-      color: #666;
-      margin-bottom: 14px;
+      color: #555;
+      margin-bottom: 16px;
     }
     .sqs-text p {
       font-family: 'Inter', -apple-system, sans-serif;
       font-size: 16px;
       line-height: 1.8;
-      color: #666;
-      margin-bottom: 14px;
+      color: #555;
+      margin-bottom: 16px;
     }
 
     /* ===== IMAGE BLOCK ===== */
@@ -161,6 +237,9 @@
 
     /* ===== SPACER ===== */
     .section-spacer { height: 40px; }
+
+    /* ===== PROJECT CARDS ===== */
+    .project-cards .project-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.12) !important; }
 
     /* ===== FOOTER (matches site system) ===== */
     .footer {
@@ -215,6 +294,7 @@
       }
       .sqs-row { flex-direction: column; margin: 0; }
       .problem-fluid { grid-template-columns: 1fr; }
+      .project-cards { grid-template-columns: 1fr !important; }
     }
     @media (max-width: 600px) {
       .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
@@ -234,9 +314,9 @@
       <div class="dropdown-menu">
         <a href="../meltwater/meltwaterindex.html">1. Meltwater</a>
         <a href="../Weee!-present/index.html">2. Weee!</a>
-        <a href="index.html">3. Bogo</a>
+        <a href="index.html" style="font-weight: 600; color: #1a1a2e;">3. Bogo</a>
         <a href="../ClassPass-present/classpassindex.html">4. ClassPass</a>
-        <a href="../others.html">5. Others</a>
+        <!-- <a href="../others.html">5. Others</a> -->
       </div>
     </div>
     <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
@@ -267,7 +347,7 @@
     <a href="../Weee!-present/index.html" class="sub-link">2. Weee!</a>
     <a href="index.html" class="sub-link">3. Bogo</a>
     <a href="../ClassPass-present/classpassindex.html" class="sub-link">4. ClassPass</a>
-    <a href="../others.html" class="sub-link">5. Others</a>
+    <!-- <a href="../others.html" class="sub-link">5. Others</a> -->
     <a href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank">Resume</a>
   </div>
   <div class="mobile-menu-social">
@@ -280,104 +360,122 @@
   </div>
 </div>
 
+<!-- HERO -->
+<section class="hero" id="overview">
+  <div class="container" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+    <div style="position: relative; z-index: 2;">
+      <div class="hero-eyebrow"><span class="dot"></span> Work Project &mdash; 2020 &mdash; Released</div>
+      <h1>BOGO: <span class="highlight">Live Video Streaming</span></h1>
+      <p class="hero-sub">BOGO is a mobile app that delivers private LIVE videos remotely, helping users make better decisions in their daily lives &mdash; like ordering an Uber, but for real-time video.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-number">2020</div>
+          <div class="hero-stat-label">Year</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">5</div>
+          <div class="hero-stat-label">Team Members</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/14760955-9edd-4be9-95bd-f75ca9b9067f/4.png" alt="BOGO App">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT META -->
+<section style="background: #fff; padding: 100px 0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;">
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">My Role</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">Product Designer<br>User Researcher</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Responsibilities</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">User interviews, visual design, interaction & motion design, prototyping & testing</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Team</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">Product Manager (1)<br>Mobile Engineers (3)<br>Graphic Designer (1)</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Timeline</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== MAIN CONTENT ====== -->
-<div style="padding-top: 80px;">
+<div>
 
-  <!-- SECTION 1: OVERVIEW (6+6 grid) -->
-  <div class="page-section">
-    <div class="container">
-      <div class="sqs-row">
-        <div class="sqs-col-6">
-          <div class="image-block">
-            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/14760955-9edd-4be9-95bd-f75ca9b9067f/4.png" alt="BOGO App">
-          </div>
-        </div>
-        <div class="sqs-col-6 sqs-text">
-          <h3><strong>Overview</strong></h3>
-          <h4>BOGO is a mobile app that delivers private LIVE videos remotely, helping users make better decisions in their daily lives.</h4>
-          <h4>With BOGO, users can request LIVE videos from streamers in a process similar to ordering an Uber. Streamers can earn money with just a simple tap of their fingertips.</h4>
-          <h3><strong>My Responsibilities</strong></h3>
-          <h4>Led a product team of three, ensuring proper processes were followed for user interviews, visual design, interaction and motion design, as well as prototyping and testing.</h4>
-          <h3><strong>Time:</strong></h3>
-          <h4>2020</h4>
-          <h3><strong>Type:</strong></h3>
-          <h4>Work Project (Released)</h4>
-        </div>
-      </div>
-      <!-- Role / Team sub-row -->
-      <div class="sqs-row" style="justify-content: flex-end;">
-        <div class="sqs-col-3 sqs-text">
-          <h3><strong>My Role:</strong></h3>
-          <h4>Product Designer<br>User Researcher</h4>
-        </div>
-        <div class="sqs-col-3 sqs-text">
-          <h3><strong>Team:</strong></h3>
-          <h4>Product Manager (1)<br>Mobile Engineer Team (3)<br>Graphic Designer (1)</h4>
+  <!-- SECTION 2: CONTEXT -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container" style="text-align: center;">
+      <div class="section-label">The Challenge</div>
+      <div class="section-title" style="font-style: italic; margin-bottom: 24px;">&ldquo;Sometimes, it&rsquo;s hard to know the truth!&rdquo;</div>
+      <p style="font-size: 17px; color: #555; line-height: 1.8; max-width: 700px; margin: 0 auto 48px;">If you need real information but can&rsquo;t be there in person, you might ask your friends or search online. However, if the information is outdated or incorrect, you risk getting inaccurate details.</p>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <img src="bogo-1.png" alt="What you see online vs reality" style="border-radius: 12px;">
+        <div style="display: flex; justify-content: space-around; margin-top: 16px;">
+          <span style="font-size: 14px; font-weight: 600; color: #E85D3A;">What you see online</span>
+          <span style="font-size: 14px; font-weight: 600; color: #888;">vs</span>
+          <span style="font-size: 14px; font-weight: 600; color: #E85D3A;">What it actually looks like</span>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- SECTION 2: PROBLEM STATEMENT -->
-  <div class="page-section">
-    <div class="container sqs-text">
-      <p>&nbsp;</p>
-      <h2 class="text-center" style="font-style: italic;">&ldquo;Sometimes, it&rsquo;s hard to know the truth!&rdquo;</h2>
-      <h4>If you need real information but can&rsquo;t be there in person, you might ask your friends or search online. However, if the information is outdated or incorrect, you risk getting inaccurate details.</h4>
-      <div class="divider-img">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836186711-3FYTKNB13DDNTGW6QYK8/Rectangle+10.png" alt="">
-      </div>
-      <div class="problem-fluid">
-        <div class="text-center">
-          <h2><strong><em>Problem Statement:</em></strong></h2>
-        </div>
-        <div class="text-center">
-          <h3><em>How Can We Help People Access Real-Time Information Remotely?</em></h3>
-        </div>
-      </div>
+  <!-- PROBLEM STATEMENT -->
+  <section style="padding: 100px 0; background: #E85D3A; color: #fff; position: relative; overflow: hidden;">
+    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="container" style="position: relative; z-index: 2; text-align: center;">
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.6); margin-bottom: 16px;">Problem Statement</div>
+      <p style="font-family: 'Playfair Display', serif; font-size: clamp(24px, 3vw, 36px); font-style: italic; line-height: 1.5; color: #fff; max-width: 800px; margin: 0 auto;">"How Can We Help People Access Real-Time Information Remotely?"</p>
     </div>
-  </div>
+  </section>
 
   <!-- SECTION 3: TWO ROLES -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>Two kind of roles in Bogo</strong></h2>
-      <div class="sqs-row">
-        <div class="sqs-col-2 sqs-text">
-          <div class="image-block">
-            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775118958-L841XV6C8GSEW52DVQX4/image-asset.png" alt="Requester">
+      <div class="section-label">Overview</div>
+      <div class="section-title">Two Kinds of Roles in Bogo</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 32px;">
+        <!-- Requester -->
+        <div style="text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775118958-L841XV6C8GSEW52DVQX4/image-asset.png" alt="Requester" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;">
+            <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a2e;">Requesters</h4>
           </div>
-          <h4 class="text-center"><strong>Requesters</strong></h4>
-          <h4><strong>Goal:</strong> <strong>They want more detailed information to make an informed decision.</strong></h4>
-        </div>
-        <div class="sqs-col-3">
+          <p style="font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 20px;"><strong>Goal:</strong> Get more detailed information to make an informed decision.</p>
           <div class="image-block">
-            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775152409-ZW3TPGP3PC0PT48UCKLQ/ttt.gif" alt="Requester demo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775152409-ZW3TPGP3PC0PT48UCKLQ/ttt.gif" alt="Requester demo" style="border-radius: 12px; max-width: 320px; margin: 0 auto;">
           </div>
         </div>
-        <div style="width: 2%;"></div>
-        <div class="sqs-col-2 sqs-text">
-          <div class="image-block">
-            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775260552-8SDN3QHS33PF1NXNAGLV/image-asset.png" alt="Streamer">
+        <!-- Streamer -->
+        <div style="text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775260552-8SDN3QHS33PF1NXNAGLV/image-asset.png" alt="Streamer" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;">
+            <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a2e;">Streamers</h4>
           </div>
-          <h4 class="text-center"><strong>Streamers</strong></h4>
-          <h4><strong>Goal: They want to make money the easy way</strong></h4>
-        </div>
-        <div class="sqs-col-3">
+          <p style="font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 20px;"><strong>Goal:</strong> Earn money the easy way.</p>
           <div class="image-block">
-            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775297900-CLOG3TZK6WOV5JZCMJ42/switch.gif" alt="Streamer demo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775297900-CLOG3TZK6WOV5JZCMJ42/switch.gif" alt="Streamer demo" style="border-radius: 12px; max-width: 320px; margin: 0 auto;">
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- SECTION 4: JESSE PERSONA (6+6) -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container">
-      <div class="sqs-row">
+      <div class="section-label">Persona</div>
+      <div class="section-title">Let&rsquo;s Meet Jesse, A BOGO User</div>
+      <div class="sqs-row" style="margin-top: 32px;">
         <div class="sqs-col-6 sqs-text">
-          <h2><strong>Let&rsquo;s Meet Jesse, A BOGO User</strong></h2>
           <h4>Jesse is a 29-year-old Project Manager at Google. He travels frequently and spends a lot of time researching airport information to plan his trips. With BOGO, Jesse can request a LIVE video with just a tap to get a smarter travel plan.</h4>
         </div>
         <div class="sqs-col-6">
@@ -387,168 +485,212 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- DESIGN PROGRESS -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>Design Progress</strong></h2>
+      <div class="section-label">Process</div>
+      <div class="section-title">Design Progress</div>
       <div class="image-block">
         <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/f697b525-3c78-4c67-a09c-c2830a7fac72/Group+17224.png" alt="Design Progress">
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- STEP 1: USER RESEARCH -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>1.&nbsp; Use User Research to Guide the Product Direction ( User Research )</strong></h2>
-      <h4><strong>User Interviews</strong></h4>
+      <div class="section-label">Step 1 &mdash; User Research</div>
+      <div class="section-title">Use User Research to Guide the Product Direction</div>
+      <h3>User Interviews</h3>
       <h4>The interviews were conducted with ten people who shared similar issues. Each interview lasted approximately 10-15 minutes, during which participants were asked questions such as &ldquo;Who?&rdquo;, &ldquo;What?&rdquo;, &ldquo;When?&rdquo;, &ldquo;Where?&rdquo;, &ldquo;Why?&rdquo;, and &ldquo;How?&rdquo;. These questions helped identify and assess their pain points across various locations (e.g., coffee shops, meeting rooms, etc.).</h4>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610432667464-Y7M4F824FXHD0ZZNXA22/IMG_1578+1.png" alt="User Interview">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610432667464-Y7M4F824FXHD0ZZNXA22/IMG_1578+1.png" alt="User Interview" style="width: 80%; margin: 0 auto;">
       </div>
-      <h3><strong>Interviews Findings</strong></h3>
+      <h3>Interview Findings</h3>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/f173943f-bd0c-4bb2-8cad-fb5d417b9d9c/Group+17218.png" alt="Findings">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/f173943f-bd0c-4bb2-8cad-fb5d417b9d9c/Group+17218.png" alt="Findings" style="width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- STEP 2: SYNTHESIZE -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>2. Synthesize</strong></h2>
+      <div class="section-label">Step 2 &mdash; Synthesis</div>
+      <div class="section-title">Synthesize</div>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610778946271-3VD5M2M47BLJPVJ4N9LB/Group+14107.png" alt="Synthesize">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610778946271-3VD5M2M47BLJPVJ4N9LB/Group+14107.png" alt="Synthesize" style="width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
-
-  <!-- DIVIDER -->
-  <div class="container"><div class="divider-img">
-    <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836186711-3FYTKNB13DDNTGW6QYK8/Rectangle+10.png" alt="">
-  </div></div>
+  </section>
 
   <!-- STEP 3: COMPETITIVE ANALYSIS -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>3. Use Other Apps Mentioned from Interviewees to Improve Product Vision (Competitive Analysis)</strong></h2>
+      <div class="section-label">Step 3 &mdash; Competitive Analysis</div>
+      <div class="section-title">Improve Product Vision Through Competitive Analysis</div>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779213664-74EDDIRHL5ITH4JKUWJG/Group+14104.png" alt="Competitive Analysis">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779213664-74EDDIRHL5ITH4JKUWJG/Group+14104.png" alt="Competitive Analysis" style="max-width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- STEP 4: IDEATION -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>4. Redefine the Problem and Ask &ldquo;How Might We&rdquo; Questions to Brainstorm Initial Ideas and Identify Solutions (Ideation)</strong></h2>
+      <div class="section-label">Step 4 &mdash; Ideation</div>
+      <div class="section-title">Redefine the Problem &amp; Brainstorm Solutions</div>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435559466-71LV1PH1PWU80UOX1AIZ/IMG_6386.png" alt="Brainstorm">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435559466-71LV1PH1PWU80UOX1AIZ/IMG_6386.png" alt="Brainstorm" style="max-width: 80%; margin: 0 auto;">
       </div>
       <h4 class="text-center" style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; font-style: italic; color: #1a1a2e; margin: 32px 0;">&ldquo;Design An App That Helps Users Request A Live Video From Streamers.&rdquo;</h4>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435564318-8NQM8QO7ZM479BKNPZGQ/Screen+Shot+2020-12-25+at+3.49+1.png" alt="Ideation">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435564318-8NQM8QO7ZM479BKNPZGQ/Screen+Shot+2020-12-25+at+3.49+1.png" alt="Ideation" style="max-width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
-
-  <!-- DIVIDER -->
-  <div class="container"><div class="divider-img">
-    <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836186711-3FYTKNB13DDNTGW6QYK8/Rectangle+10.png" alt="">
-  </div></div>
+  </section>
 
   <!-- STEP 5: DEFINING GOALS -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>5. Find A Common Ground In User Goals And Business Goals ( Defining Goals )</strong></h2>
+      <div class="section-label">Step 5 &mdash; Defining Goals</div>
+      <div class="section-title">Find Common Ground in User &amp; Business Goals</div>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435821782-FPP44BFFL7FJRUSXETTF/Screen+Shot+2020-11-29+at+11.31+5.png" alt="Goals">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435821782-FPP44BFFL7FJRUSXETTF/Screen+Shot+2020-11-29+at+11.31+5.png" alt="Goals" style="max-width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- STEP 6: PRODUCT DECISION -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>6. Prioritizing The Features Based On User Research ( Product Decision )</strong></h2>
+      <div class="section-label">Step 6 &mdash; Product Decision</div>
+      <div class="section-title">Prioritizing Features Based on User Research</div>
       <h4>Based on user research and competitive analysis, the decision was made to include the following features to provide the most value to users in the MVP:</h4>
-      <h4>Quickly change identities between requester and streamer.</h4>
-      <h4>Request / receive live video based on location / content.</h4>
-      <h4>Send/receive a text during the live video.</h4>
-      <h4>Spend/make money on the platform.</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>Quickly change identities between requester and streamer.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>Request / receive live video based on location / content.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>Send/receive a text during the live video.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">4</span>Spend/make money on the platform.</li>
+      </ul>
       <div class="section-spacer"></div>
-      <h4><strong>Requester&rsquo;s Flow and Low Fidelity</strong></h4>
+      <h3>Requester&rsquo;s Flow and Low Fidelity</h3>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610431825376-KKV3P3K8D2VW06FEP1ED/Group+14090.png" alt="Requester Flow">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610431825376-KKV3P3K8D2VW06FEP1ED/Group+14090.png" alt="Requester Flow" style="max-width: 80%; margin: 0 auto;">
       </div>
-      <h4><strong>Streamer&rsquo;s Flow and Low Fidelity</strong></h4>
+      <h3>Streamer&rsquo;s Flow and Low Fidelity</h3>
       <div class="image-block">
-        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779621297-EOCC3GXH1P09NP8O3NSS/Group+14091.png" alt="Streamer Flow">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779621297-EOCC3GXH1P09NP8O3NSS/Group+14091.png" alt="Streamer Flow" style="max-width: 80%; margin: 0 auto;">
       </div>
     </div>
-  </div>
-
-  <!-- DIVIDER -->
-  <div class="container"><div class="divider-img">
-    <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836186711-3FYTKNB13DDNTGW6QYK8/Rectangle+10.png" alt="">
-  </div></div>
+  </section>
 
   <!-- STEP 7: DESIGN DECISIONS -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>7. Use Strategies To Help Users Maximize Valuable Information ( Design Decisions )</strong></h2>
-      <h4>There are two different ways to measure whether users are optimizing helpful information in BOGO:</h4>
-      <h4>The number of request tasks intentionally performed.</h4>
-      <h4>The amount of satisfaction gained after they finish requesting.</h4>
-      <h4>The drop-off rate during the experience.</h4>
+      <div class="section-label">Step 7 &mdash; Design Decisions</div>
+      <div class="section-title">Strategies to Maximize Valuable Information</div>
+      <h4>There are three key metrics to measure whether users are optimizing helpful information in BOGO:</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 48px 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>The number of request tasks intentionally performed.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>The amount of satisfaction gained after they finish requesting.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>The drop-off rate during the experience.</li>
+      </ul>
       <div class="image-block">
         <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610436315928-JWEBLB98KGVZOULTPBKO/Group+14102.png" alt="Design Decisions">
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- STEP 8: ITERATIONS -->
-  <div class="page-section">
+  <section style="background: #fff; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>8. Iterations</strong></h2>
-      <h4><strong>Be Mindful Of Human Factors</strong></h4>
+      <div class="section-label">Step 8 &mdash; Iteration</div>
+      <div class="section-title">Iterations</div>
+      <h3>Be Mindful Of Human Factors</h3>
       <h4>The human factor is a very critical detail to pay attention to during user testing. The original input box design is on the top like a title, but when the user wants to input information, it&rsquo;s really hard to reach the input box. In the next iteration, the input box will be moved from top to bottom which will help make the experience more &ldquo;human finger friendly&rdquo;.</h4>
       <div class="image-block">
         <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780098835-F3U7YZQLQ8H4PVYHZD80/Group+14108.png" alt="Human Factors">
       </div>
-      <h4><strong>Reduce The Efforts, Increase The Users</strong></h4>
+      <h3>Reduce The Efforts, Increase The Users</h3>
       <div class="image-block">
         <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780119944-FMK518D9F7NLDDP1SULI/Group+14103.png" alt="Reduce Efforts">
       </div>
-      <h4><strong>Creating An Awesome Reading Experience Through Visual Design</strong></h4>
+      <h3>Creating An Awesome Reading Experience Through Visual Design</h3>
       <h4>Two separate information blocks were combined into one block and the critical information was highlighted. It made it easy for users to get the information quickly.</h4>
       <h4>Helvetica was used throughout the application to ensure legibility and familiarity with users. Various font sizes, weights, and colors were also used throughout the application to create a clear information hierarchy.</h4>
       <div class="image-block">
         <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780137073-MS261DUM7EEFDJ49XHIQ/Mask+Group.png" alt="Visual Design">
       </div>
     </div>
-  </div>
-
-  <!-- DIVIDER -->
-  <div class="container"><div class="divider-img">
-    <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836186711-3FYTKNB13DDNTGW6QYK8/Rectangle+10.png" alt="">
-  </div></div>
+  </section>
 
   <!-- STEP 9: REFLECTIONS -->
-  <div class="page-section">
+  <section style="background: #f7f7f7; padding: 100px 0;">
     <div class="container sqs-text">
-      <h2><strong>9. Reflections</strong></h2>
+      <div class="section-label">Step 9 &mdash; Reflection</div>
+      <div class="section-title">Reflections</div>
       <h4>This project was very rewarding and helping me meet my personal goals and passions. Within the three months I gave myself to work on this project, I truly enjoyed myself and had fun.</h4>
       <h4>Three main lessons I learned from this project are:</h4>
-      <h4>The sky&rsquo;s the limit, but with technology and time constraints, I learned to prioritize features that provide the most value to users;</h4>
-      <h4>Consider human factors to enhance the UX, such as &ldquo;fat fingers&rdquo; and Fitts&rsquo; Law;</h4>
-      <h4>Visual design is a crucial part of the overall experience, especially when the function of the app is heavily dependent on the information hierarchy and legibility of the content.</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>The sky&rsquo;s the limit, but with technology and time constraints, I learned to prioritize features that provide the most value to users.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>Consider human factors to enhance the UX, such as &ldquo;fat fingers&rdquo; and Fitts&rsquo; Law.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>Visual design is a crucial part of the overall experience, especially when the function of the app is heavily dependent on the information hierarchy and legibility of the content.</li>
+      </ul>
     </div>
-  </div>
+  </section>
 
 </div>
+
+<!-- EXPLORE OTHER PROJECTS -->
+<section style="padding: 100px 0; background: #1a1a2e;">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div class="section-label" style="color: #FF9800;">More Work</div>
+      <div class="section-title" style="color: #fff;">Explore Other Projects</div>
+    </div>
+    <div class="project-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <!-- Meltwater -->
+      <a href="../meltwater/meltwaterindex.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../images/meltwater.png" alt="Meltwater" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Enterprise SaaS</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Meltwater</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">AI Newsletter &amp; media intelligence redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- Weee! -->
+      <a href="../Weee!-present/index.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/08243bed-80fa-436d-b913-5e11d186b736/1+1225471600.png" alt="Weee!" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">E-Commerce</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Weee!</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">End-to-end share order experience redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- ClassPass -->
+      <a href="../ClassPass-present/classpassindex.html" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../ClassPass-present/images/classpass-hero.png" alt="ClassPass" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Fitness &amp; Wellness</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">ClassPass</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">Mobile exploration, search &amp; checkout redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer class="footer">
