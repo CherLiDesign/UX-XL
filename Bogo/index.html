@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOGO — Live Video Streaming App — Cher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===== BOGO DESIGN SYSTEM =====
+       Matches site-wide system used in Weee! / Meltwater / Homepage
+       Font stack: Inter + Playfair Display
+       Neutral: #1a1a2e (text), #555 (body), #888 (muted)
+       Layout: max-width 1400px, padding 48px
+       Nav: sticky, grid 3-col, logo centered
+    ================================== */
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== NAV (matches Weee!/Homepage system) ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 48px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+    }
+    .nav.scrolled { padding: 12px 48px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav-logo { justify-self: center; }
+    .nav-logo a { display: flex; align-items: center; }
+    .nav-logo img { height: 50px; width: auto; }
+    .nav-left { display: flex; align-items: center; gap: 32px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+    .nav-right a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border: 1px solid #ddd;
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .nav-right a:hover { border-color: #999; }
+    .nav-right svg { width: 14px; height: 14px; }
+    .dropdown { position: relative; }
+    .dropdown-trigger {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      cursor: pointer; padding: 6px 0; background: none;
+      border: none; color: inherit; font-family: inherit;
+    }
+    .dropdown-trigger:hover { opacity: 0.7; }
+    .dropdown-trigger svg { width: 10px; height: 10px; transition: transform 0.2s; }
+    .dropdown:hover .dropdown-trigger svg { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: -16px;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px; padding: 8px 0; min-width: 180px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      opacity: 0; visibility: hidden; transform: translateY(4px);
+      transition: all 0.2s ease;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a {
+      display: block; padding: 8px 20px; font-size: 13px;
+      font-weight: 400; color: #333; transition: background 0.15s;
+    }
+    .dropdown-menu a:hover { background: #f5f5f5; }
+    .nav-item {
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      cursor: pointer; padding: 6px 0;
+    }
+    .nav-item:hover { opacity: 0.7; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+    /* ===== SQUARESPACE GRID (faithful to original) ===== */
+    .sqs-row {
+      display: flex; flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+    .sqs-col-12 { width: 100%; padding: 0 15px; }
+    .sqs-col-6  { width: 50%; padding: 0 15px; }
+    .sqs-col-5  { width: 41.66%; padding: 0 15px; }
+    .sqs-col-4  { width: 33.33%; padding: 0 15px; }
+    .sqs-col-3  { width: 25%; padding: 0 15px; }
+    .sqs-col-2  { width: 16.66%; padding: 0 12px; }
+    .sqs-col-7  { width: 58.33%; padding: 0 15px; }
+
+    /* ===== SECTIONS ===== */
+    section { position: relative; }
+    .section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 3px; color: #E85D3A; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .section-desc {
+      font-size: 18px; line-height: 1.7; color: #555;
+      max-width: 640px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(150deg, #FFF3E0 0%, #fff0e8 35%, #FFE0B2 70%, #fff5ec 100%);
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -15%; left: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,93,58,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,152,0,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,93,58,0.1); border-radius: 100px;
+      padding: 8px 20px; font-size: 13px; font-weight: 600;
+      color: #E85D3A; margin-bottom: 28px;
+    }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF9800; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #E85D3A, #FF9800);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 20px; color: #555; line-height: 1.7; margin-bottom: 40px; max-width: 500px;
+    }
+    .hero-stats { display: flex; gap: 48px; }
+    .hero-stat-number {
+      font-size: 48px; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, #E85D3A, #FF9800);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label { font-size: 13px; color: #888; margin-top: 8px; font-weight: 500; }
+    .hero-visual {
+      position: relative; z-index: 2;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      transition: transform 0.6s ease;
+      max-width: 90%; margin-left: auto;
+    }
+    .hero-visual:hover { transform: scale(1.02); }
+
+    /* ===== PAGE SECTION ===== */
+    .page-section {
+      padding: 3vw 0;
+    }
+
+    /* ===== TEXT STYLES (matches Meltwater design system) ===== */
+    .sqs-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+    }
+    .sqs-text h3 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #1a1a2e;
+      margin-top: 64px;
+      margin-bottom: 28px;
+    }
+    .sqs-text h4 {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 16px;
+    }
+    .sqs-text p {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    /* ===== IMAGE BLOCK ===== */
+    .image-block {
+      margin-bottom: 20px;
+    }
+
+    /* ===== DIVIDER IMAGE ===== */
+    .divider-img {
+      margin: 10px 0;
+    }
+
+    /* ===== CENTERED TEXT ===== */
+    .text-center { text-align: center; }
+
+    /* ===== PROBLEM STATEMENT FLUID GRID ===== */
+    .problem-fluid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+      align-items: center;
+    }
+
+    /* ===== SPACER ===== */
+    .section-spacer { height: 40px; }
+
+    /* ===== PROJECT CARDS ===== */
+    .project-cards .project-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.12) !important; }
+
+    /* ===== FOOTER (matches site system) ===== */
+    .footer {
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 40px 3vw;
+    }
+    .footer-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 13px; color: #777; font-weight: 500; }
+    .footer-social { display: flex; gap: 12px; }
+    .footer-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border: 1px solid #ddd;
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .footer-social a:hover { border-color: #999; }
+    .footer-social svg { width: 14px; height: 14px; }
+
+    /* ===== HAMBURGER / MOBILE MENU ===== */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #1a1a2e; transition: all 0.3s; }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #fff; z-index: 2000; padding: 24px; flex-direction: column;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu-header { display: flex; justify-content: flex-end; margin-bottom: 40px; }
+    .mobile-close { background: none; border: none; font-size: 28px; cursor: pointer; line-height: 1; }
+    .mobile-menu-links { display: flex; flex-direction: column; gap: 20px; }
+    .mobile-menu-links a { font-size: 20px; font-weight: 500; }
+    .mobile-menu-links .sub-link { padding-left: 20px; font-size: 16px; font-weight: 400; color: #555; }
+    .mobile-menu-social { margin-top: auto; display: flex; gap: 16px; padding-bottom: 40px; }
+    .mobile-menu-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border: 1px solid #ddd; border-radius: 50%;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .nav { padding: 14px 24px; }
+      .nav-left, .nav-right, .nav-logo { display: none; }
+      .hamburger { display: flex; }
+      .nav { display: flex; justify-content: flex-end; }
+      .container { padding: 0 24px; }
+      .sqs-col-6, .sqs-col-5, .sqs-col-4, .sqs-col-3, .sqs-col-2, .sqs-col-7 {
+        width: 100%; padding: 0;
+      }
+      .sqs-row { flex-direction: column; margin: 0; }
+      .problem-fluid { grid-template-columns: 1fr; }
+      .project-cards { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 600px) {
+      .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <div class="dropdown">
+      <button class="dropdown-trigger">
+        PROJECTS
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dropdown-menu">
+        <a href="../Meltwater/">1. Meltwater</a>
+        <a href="../Weee/">2. Weee!</a>
+        <a href="index.html" style="font-weight: 600; color: #1a1a2e;">3. Bogo</a>
+        <a href="../ClassPass/">4. ClassPass</a>
+        <!-- <a href="../others.html">5. Others</a> -->
+      </div>
+    </div>
+    <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
+  </div>
+  <div class="nav-logo">
+    <a href="../index.html"><img src="../images/logo.png" alt="Xuan Li"></a>
+  </div>
+  <div class="nav-right">
+    <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+  <button class="hamburger" id="navHamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <button class="mobile-close" onclick="document.getElementById('mobileMenu').classList.remove('active')">&times;</button>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="../Meltwater/" class="sub-link">1. Meltwater</a>
+    <a href="../Weee/" class="sub-link">2. Weee!</a>
+    <a href="index.html" class="sub-link">3. Bogo</a>
+    <a href="../ClassPass/" class="sub-link">4. ClassPass</a>
+    <!-- <a href="../others.html" class="sub-link">5. Others</a> -->
+    <a href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank">Resume</a>
+  </div>
+  <div class="mobile-menu-social">
+    <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="overview">
+  <div class="container" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+    <div style="position: relative; z-index: 2;">
+      <div class="hero-eyebrow"><span class="dot"></span> Work Project &mdash; 2020 &mdash; Released</div>
+      <h1>BOGO: <span class="highlight">Live Video Streaming</span></h1>
+      <p class="hero-sub">BOGO is a mobile app that delivers private LIVE videos remotely, helping users make better decisions in their daily lives &mdash; like ordering an Uber, but for real-time video.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-number">2020</div>
+          <div class="hero-stat-label">Year</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">5</div>
+          <div class="hero-stat-label">Team Members</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/14760955-9edd-4be9-95bd-f75ca9b9067f/4.png" alt="BOGO App">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT META -->
+<section style="background: #fff; padding: 100px 0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;">
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">My Role</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">Product Designer<br>User Researcher</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Responsibilities</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">User interviews, visual design, interaction & motion design, prototyping & testing</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Team</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">Product Manager (1)<br>Mobile Engineers (3)<br>Graphic Designer (1)</div>
+      </div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #E85D3A; margin-bottom: 12px;">Timeline</div>
+        <div style="font-size: 16px; color: #555; line-height: 1.8;">2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== MAIN CONTENT ====== -->
+<div>
+
+  <!-- SECTION 2: CONTEXT -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container" style="text-align: center;">
+      <div class="section-label">The Challenge</div>
+      <div class="section-title" style="font-style: italic; margin-bottom: 24px;">&ldquo;Sometimes, it&rsquo;s hard to know the truth!&rdquo;</div>
+      <p style="font-size: 17px; color: #555; line-height: 1.8; max-width: 700px; margin: 0 auto 48px;">If you need real information but can&rsquo;t be there in person, you might ask your friends or search online. However, if the information is outdated or incorrect, you risk getting inaccurate details.</p>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <img src="bogo-1.png" alt="What you see online vs reality" style="border-radius: 12px;">
+        <div style="display: flex; justify-content: space-around; margin-top: 16px;">
+          <span style="font-size: 14px; font-weight: 600; color: #E85D3A;">What you see online</span>
+          <span style="font-size: 14px; font-weight: 600; color: #888;">vs</span>
+          <span style="font-size: 14px; font-weight: 600; color: #E85D3A;">What it actually looks like</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM STATEMENT -->
+  <section style="padding: 100px 0; background: #E85D3A; color: #fff; position: relative; overflow: hidden;">
+    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="container" style="position: relative; z-index: 2; text-align: center;">
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.6); margin-bottom: 16px;">Problem Statement</div>
+      <p style="font-family: 'Playfair Display', serif; font-size: clamp(24px, 3vw, 36px); font-style: italic; line-height: 1.5; color: #fff; max-width: 800px; margin: 0 auto;">"How Can We Help People Access Real-Time Information Remotely?"</p>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TWO ROLES -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Overview</div>
+      <div class="section-title">Two Kinds of Roles in Bogo</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 32px;">
+        <!-- Requester -->
+        <div style="text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775118958-L841XV6C8GSEW52DVQX4/image-asset.png" alt="Requester" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;">
+            <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a2e;">Requesters</h4>
+          </div>
+          <p style="font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 20px;"><strong>Goal:</strong> Get more detailed information to make an informed decision.</p>
+          <div class="image-block">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775152409-ZW3TPGP3PC0PT48UCKLQ/ttt.gif" alt="Requester demo" style="border-radius: 12px; max-width: 320px; margin: 0 auto;">
+          </div>
+        </div>
+        <!-- Streamer -->
+        <div style="text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775260552-8SDN3QHS33PF1NXNAGLV/image-asset.png" alt="Streamer" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;">
+            <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a2e;">Streamers</h4>
+          </div>
+          <p style="font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 20px;"><strong>Goal:</strong> Earn money the easy way.</p>
+          <div class="image-block">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1592775297900-CLOG3TZK6WOV5JZCMJ42/switch.gif" alt="Streamer demo" style="border-radius: 12px; max-width: 320px; margin: 0 auto;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: JESSE PERSONA (6+6) -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container">
+      <div class="section-label">Persona</div>
+      <div class="section-title">Let&rsquo;s Meet Jesse, A BOGO User</div>
+      <div class="sqs-row" style="margin-top: 32px;">
+        <div class="sqs-col-6 sqs-text">
+          <h4>Jesse is a 29-year-old Project Manager at Google. He travels frequently and spends a lot of time researching airport information to plan his trips. With BOGO, Jesse can request a LIVE video with just a tap to get a smarter travel plan.</h4>
+        </div>
+        <div class="sqs-col-6">
+          <div class="image-block">
+            <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610432972417-R3JZ7BOLJEGRIVBAODJW/Group+14096.png" alt="Jesse Persona">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN PROGRESS -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Process</div>
+      <div class="section-title">Design Progress</div>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/f697b525-3c78-4c67-a09c-c2830a7fac72/Group+17224.png" alt="Design Progress">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 1: USER RESEARCH -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 1 &mdash; User Research</div>
+      <div class="section-title">Use User Research to Guide the Product Direction</div>
+      <h3>User Interviews</h3>
+      <h4>The interviews were conducted with ten people who shared similar issues. Each interview lasted approximately 10-15 minutes, during which participants were asked questions such as &ldquo;Who?&rdquo;, &ldquo;What?&rdquo;, &ldquo;When?&rdquo;, &ldquo;Where?&rdquo;, &ldquo;Why?&rdquo;, and &ldquo;How?&rdquo;. These questions helped identify and assess their pain points across various locations (e.g., coffee shops, meeting rooms, etc.).</h4>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610432667464-Y7M4F824FXHD0ZZNXA22/IMG_1578+1.png" alt="User Interview" style="width: 80%; margin: 0 auto;">
+      </div>
+      <h3>Interview Findings</h3>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/f173943f-bd0c-4bb2-8cad-fb5d417b9d9c/Group+17218.png" alt="Findings" style="width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: SYNTHESIZE -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 2 &mdash; Synthesis</div>
+      <div class="section-title">Synthesize</div>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610778946271-3VD5M2M47BLJPVJ4N9LB/Group+14107.png" alt="Synthesize" style="width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3: COMPETITIVE ANALYSIS -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 3 &mdash; Competitive Analysis</div>
+      <div class="section-title">Improve Product Vision Through Competitive Analysis</div>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779213664-74EDDIRHL5ITH4JKUWJG/Group+14104.png" alt="Competitive Analysis" style="max-width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4: IDEATION -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 4 &mdash; Ideation</div>
+      <div class="section-title">Redefine the Problem &amp; Brainstorm Solutions</div>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435559466-71LV1PH1PWU80UOX1AIZ/IMG_6386.png" alt="Brainstorm" style="max-width: 80%; margin: 0 auto;">
+      </div>
+      <h4 class="text-center" style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; font-style: italic; color: #1a1a2e; margin: 32px 0;">&ldquo;Design An App That Helps Users Request A Live Video From Streamers.&rdquo;</h4>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435564318-8NQM8QO7ZM479BKNPZGQ/Screen+Shot+2020-12-25+at+3.49+1.png" alt="Ideation" style="max-width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5: DEFINING GOALS -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 5 &mdash; Defining Goals</div>
+      <div class="section-title">Find Common Ground in User &amp; Business Goals</div>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610435821782-FPP44BFFL7FJRUSXETTF/Screen+Shot+2020-11-29+at+11.31+5.png" alt="Goals" style="max-width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6: PRODUCT DECISION -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 6 &mdash; Product Decision</div>
+      <div class="section-title">Prioritizing Features Based on User Research</div>
+      <h4>Based on user research and competitive analysis, the decision was made to include the following features to provide the most value to users in the MVP:</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>Quickly change identities between requester and streamer.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>Request / receive live video based on location / content.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>Send/receive a text during the live video.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">4</span>Spend/make money on the platform.</li>
+      </ul>
+      <div class="section-spacer"></div>
+      <h3>Requester&rsquo;s Flow and Low Fidelity</h3>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610431825376-KKV3P3K8D2VW06FEP1ED/Group+14090.png" alt="Requester Flow" style="max-width: 80%; margin: 0 auto;">
+      </div>
+      <h3>Streamer&rsquo;s Flow and Low Fidelity</h3>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610779621297-EOCC3GXH1P09NP8O3NSS/Group+14091.png" alt="Streamer Flow" style="max-width: 80%; margin: 0 auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 7: DESIGN DECISIONS -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 7 &mdash; Design Decisions</div>
+      <div class="section-title">Strategies to Maximize Valuable Information</div>
+      <h4>There are three key metrics to measure whether users are optimizing helpful information in BOGO:</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 48px 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>The number of request tasks intentionally performed.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>The amount of satisfaction gained after they finish requesting.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>The drop-off rate during the experience.</li>
+      </ul>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610436315928-JWEBLB98KGVZOULTPBKO/Group+14102.png" alt="Design Decisions">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 8: ITERATIONS -->
+  <section style="background: #fff; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 8 &mdash; Iteration</div>
+      <div class="section-title">Iterations</div>
+      <h3>Be Mindful Of Human Factors</h3>
+      <h4>The human factor is a very critical detail to pay attention to during user testing. The original input box design is on the top like a title, but when the user wants to input information, it&rsquo;s really hard to reach the input box. In the next iteration, the input box will be moved from top to bottom which will help make the experience more &ldquo;human finger friendly&rdquo;.</h4>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780098835-F3U7YZQLQ8H4PVYHZD80/Group+14108.png" alt="Human Factors">
+      </div>
+      <h3>Reduce The Efforts, Increase The Users</h3>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780119944-FMK518D9F7NLDDP1SULI/Group+14103.png" alt="Reduce Efforts">
+      </div>
+      <h3>Creating An Awesome Reading Experience Through Visual Design</h3>
+      <h4>Two separate information blocks were combined into one block and the critical information was highlighted. It made it easy for users to get the information quickly.</h4>
+      <h4>Helvetica was used throughout the application to ensure legibility and familiarity with users. Various font sizes, weights, and colors were also used throughout the application to create a clear information hierarchy.</h4>
+      <div class="image-block">
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610780137073-MS261DUM7EEFDJ49XHIQ/Mask+Group.png" alt="Visual Design">
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 9: REFLECTIONS -->
+  <section style="background: #f7f7f7; padding: 100px 0;">
+    <div class="container sqs-text">
+      <div class="section-label">Step 9 &mdash; Reflection</div>
+      <div class="section-title">Reflections</div>
+      <h4>This project was very rewarding and helping me meet my personal goals and passions. Within the three months I gave myself to work on this project, I truly enjoyed myself and had fun.</h4>
+      <h4>Three main lessons I learned from this project are:</h4>
+      <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: grid; gap: 12px;">
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">1</span>The sky&rsquo;s the limit, but with technology and time constraints, I learned to prioritize features that provide the most value to users.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">2</span>Consider human factors to enhance the UX, such as &ldquo;fat fingers&rdquo; and Fitts&rsquo; Law.</li>
+        <li style="display: flex; align-items: baseline; gap: 12px; font-size: 16px; color: #555; line-height: 1.8;"><span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D3A, #FF9800); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">3</span>Visual design is a crucial part of the overall experience, especially when the function of the app is heavily dependent on the information hierarchy and legibility of the content.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<!-- EXPLORE OTHER PROJECTS -->
+<section style="padding: 100px 0; background: #1a1a2e;">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div class="section-label" style="color: #FF9800;">More Work</div>
+      <div class="section-title" style="color: #fff;">Explore Other Projects</div>
+    </div>
+    <div class="project-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <!-- Meltwater -->
+      <a href="../Meltwater/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../images/meltwater.png" alt="Meltwater" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Enterprise SaaS</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Meltwater</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">AI Newsletter &amp; media intelligence redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- Weee! -->
+      <a href="../Weee/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/08243bed-80fa-436d-b913-5e11d186b736/1+1225471600.png" alt="Weee!" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">E-Commerce</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Weee!</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">End-to-end share order experience redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- ClassPass -->
+      <a href="../ClassPass/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../ClassPass/images/classpass-hero.png" alt="ClassPass" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Fitness &amp; Wellness</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">ClassPass</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">Mobile exploration, search &amp; checkout redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2026 Xuan Li</p>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hamburger menu
+  document.getElementById('navHamburger').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('active');
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>

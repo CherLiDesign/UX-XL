@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weee! Share Your Order Redesign — Cher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===== WEEE! DESIGN SYSTEM =====
+       Primary Blue:   #00BCD4 (light), #3B8EAD (deep)
+       Primary Green:  #66BB6A (light), #3DA06B (deep)
+       Surfaces:       #E0F7FA (blue tint), #E8F5E9 (green tint)
+       Neutral:        #1a1a2e (text), #555 (body), #888 (muted)
+    ================================== */
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 80px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 48px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+    }
+    .nav.scrolled { padding: 12px 48px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav-logo { justify-self: center; }
+    .nav-logo a { display: flex; align-items: center; }
+    .nav-logo img { height: 50px; width: auto; }
+    .nav-left { display: flex; align-items: center; gap: 32px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+    .nav-right a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border: 1px solid #ddd;
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .nav-right a:hover { border-color: #999; }
+    .nav-right svg { width: 14px; height: 14px; }
+    .dropdown { position: relative; }
+    .dropdown-trigger {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      cursor: pointer; padding: 6px 0; background: none;
+      border: none; color: inherit; font-family: inherit;
+    }
+    .dropdown-trigger:hover { opacity: 0.7; }
+    .dropdown-trigger svg { width: 10px; height: 10px; transition: transform 0.2s; }
+    .dropdown:hover .dropdown-trigger svg { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: -16px;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px; padding: 8px 0; min-width: 180px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      opacity: 0; visibility: hidden; transform: translateY(4px);
+      transition: all 0.2s ease;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a {
+      display: block; padding: 8px 20px; font-size: 13px;
+      font-weight: 400; color: #333; transition: background 0.15s;
+    }
+    .dropdown-menu a:hover { background: #f5f5f5; }
+    .nav-item {
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      cursor: pointer; padding: 6px 0;
+    }
+    .nav-item:hover { opacity: 0.7; }
+
+    /* ===== SECTIONS ===== */
+    section { position: relative; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 3px; color: #3B8EAD; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .section-desc {
+      font-size: 18px; line-height: 1.7; color: #555;
+      max-width: 640px;
+    }
+    .sub-heading {
+      font-size: 28px; font-weight: 700; margin-bottom: 28px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(150deg, #E0F7FA 0%, #ebf7f8 35%, #E8F5E9 70%, #f0faf2 100%);
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -15%; left: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(61,160,107,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,188,212,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(59,142,173,0.1); border-radius: 100px;
+      padding: 8px 20px; font-size: 13px; font-weight: 600;
+      color: #3B8EAD; margin-bottom: 28px;
+    }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #3DA06B; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #3B8EAD, #3DA06B);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 20px; color: #555; line-height: 1.7; margin-bottom: 40px; max-width: 500px;
+    }
+    .hero-stats { display: flex; gap: 48px; }
+    .hero-stat-number {
+      font-size: 48px; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, #3B8EAD, #3DA06B);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label { font-size: 13px; color: #888; margin-top: 8px; font-weight: 500; }
+    .hero-visual {
+      position: relative; z-index: 2;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: none;
+      transition: transform 0.6s ease;
+      max-width: 90%; margin-left: auto;
+    }
+    .hero-visual:hover { transform: scale(1.02); }
+
+    /* ===== METRIC DIVIDER ===== */
+    .metric-divider {
+      position: relative;
+      padding-right: 32px;
+    }
+    .metric-divider::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 15%; height: 70%;
+      border-right: 1px dotted #ccc;
+    }
+
+    /* ===== OVERVIEW / META ===== */
+    .overview { padding: 100px 0; background: #fff; }
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    }
+    .meta-card {
+      background: transparent; padding: 24px 0 24px 20px;
+      border-left: 3px solid #00BCD4;
+    }
+    .meta-card h4 {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: #3B8EAD; margin-bottom: 10px;
+    }
+    .meta-card p { font-size: 14px; color: #555; line-height: 1.6; }
+
+    /* ===== PROBLEM STATEMENT ===== */
+    .problem {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #3B8EAD 0%, #3DA06B 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .problem .container { position: relative; z-index: 2; text-align: center; }
+    .problem .section-label { color: rgba(255,255,255,0.5); }
+    .problem-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-style: italic; line-height: 1.5;
+      max-width: 800px; margin: 0 auto;
+      opacity: 0.95; color: #fff;
+    }
+
+    /* ===== PHASE / GENERIC SECTION ===== */
+    .phase { padding: 100px 0; background: #fff; }
+    .phase.alt { background: #fff; }
+    .phase-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+      align-items: center; margin-top: 48px;
+    }
+    .phase-grid.reverse { direction: rtl; }
+    .phase-grid.reverse > * { direction: ltr; }
+    .phase-visual {
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      transition: transform 0.4s ease;
+      cursor: pointer;
+    }
+    .phase-visual:hover { transform: scale(1.02); }
+    .phase-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700; margin-bottom: 20px;
+    }
+    .phase-content p { font-size: 16px; color: #555; line-height: 1.8; margin-bottom: 16px; }
+
+    /* ===== BEFORE/AFTER SLIDER ===== */
+    .ba-slider-wrap {
+      position: relative;
+      max-width: 100%;
+      margin: 48px auto 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+      aspect-ratio: 2/1;
+      user-select: none;
+      cursor: ew-resize;
+    }
+    .ba-slider-wrap img {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .ba-slider-wrap .ba-after { clip-path: inset(0 0 0 50%); z-index: 2; }
+    .ba-slider-wrap .ba-before { z-index: 1; }
+    .ba-slider-handle {
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; width: 3px;
+      background: #fff; z-index: 3;
+      transform: translateX(-50%);
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+    .ba-slider-handle::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+      background: #fff; border-radius: 50%;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23555'%3E%3Cpolygon points='8,5 3,12 8,19'/%3E%3Cpolygon points='16,5 21,12 16,19'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* ===== TESTING SECTION (DARK) ===== */
+    .testing-section {
+      padding: 100px 0;
+      background: linear-gradient(150deg, #E0F7FA 0%, #ebf7f8 35%, #E8F5E9 70%, #f0faf2 100%);
+      color: #1a1a2e;
+    }
+    .testing-section .section-label { color: #3B8EAD; }
+    .testing-section .section-title { color: #1a1a2e; }
+    .testing-section .full-img { background: rgba(255,255,255,0.03); box-shadow: none; }
+
+    /* ===== TESTING TABLE ===== */
+    .test-table-title {
+      text-align: center; font-size: 18px; font-weight: 700;
+      color: #1a1a2e; padding: 20px 16px 12px;
+    }
+    .test-table-wrap {
+      max-width: 560px; margin: 40px auto 0;
+      border-radius: 16px; overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(59,142,173,0.12);
+    }
+    .test-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px;
+    }
+    .test-table thead th {
+      background: #f8fcfd;
+      color: #3B8EAD; font-weight: 700; font-size: 14px;
+      padding: 18px 16px; text-align: center;
+      border-bottom: 2px solid rgba(59,142,173,0.15);
+      letter-spacing: 0.02em;
+    }
+    .test-table thead th:first-child {
+      text-align: left; color: #1a1a2e; font-size: 15px; padding-left: 24px;
+    }
+    .test-table thead th:last-child {
+      color: #3DA06B;
+    }
+    .test-table tbody td {
+      padding: 18px 16px; text-align: center;
+      border-bottom: 1px solid rgba(59,142,173,0.08);
+      font-size: 15px; font-weight: 600; color: #1a1a2e;
+    }
+    .test-table tbody td:first-child {
+      text-align: left; font-weight: 500; color: #555;
+      padding-left: 24px; font-size: 14px;
+    }
+    .test-table tbody tr:last-child td {
+      border-bottom: none;
+      padding-top: 20px; padding-bottom: 20px;
+      background: rgba(59,142,173,0.03);
+    }
+    .test-table tbody tr:nth-child(even) td {
+      background: rgba(59,142,173,0.02);
+    }
+    .test-table .s-win {
+      color: #3DA06B; font-weight: 800; font-size: 17px;
+    }
+    .test-table .s-old {
+      color: #c0c0c0; font-weight: 600;
+    }
+    .test-table .result-pass {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #3DA06B; color: #fff; font-size: 14px; font-weight: 700;
+    }
+    .test-table .result-fail {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #ddd; color: #999; font-size: 14px; font-weight: 700;
+    }
+
+    /* ===== STEP CARDS ===== */
+    .step-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      margin-top: 48px;
+    }
+    .step-card {
+      background: #fff; border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px; padding: 32px 24px;
+      transition: all 0.3s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .step-badge {
+      display: inline-block; padding: 4px 14px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      background: #E0F7FA; color: #3B8EAD; margin-bottom: 14px;
+    }
+    .step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+    .step-card img {
+      width: 100%; margin-top: 12px;
+      border: none;
+    }
+
+    /* ===== GIF DEMOS ===== */
+    .gif-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      margin-top: 48px;
+    }
+    .gif-card {
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.3s ease;
+    }
+    .gif-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    }
+    .gif-card img { width: 100%; }
+    .gif-card-label {
+      padding: 14px 20px; font-size: 13px; font-weight: 600;
+      text-align: center; background: #fafcfd;
+      color: #3B8EAD;
+    }
+
+    /* ===== QUOTE CARDS ===== */
+    .user-quotes {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-top: 28px;
+    }
+    .user-quote {
+      background: #fff; border-radius: 12px; padding: 24px;
+      border-left: 3px solid #3DA06B;
+      font-size: 15px; color: #555; line-height: 1.7;
+      font-style: italic;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    /* ===== NUMBERED LIST ===== */
+    .numbered-list {
+      list-style: none; padding: 0; margin-top: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .numbered-list li {
+      font-size: 16px; color: #555; line-height: 1.8;
+      padding-left: 36px; position: relative;
+    }
+    .numbered-list li .num {
+      position: absolute; left: 0; top: 2px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, #3B8EAD, #3DA06B); color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ===== IMAGE ===== */
+    .full-img {
+      border-radius: 12px; overflow: hidden;
+      cursor: pointer; transition: transform 0.3s ease;
+      margin-left: auto; margin-right: auto;
+    }
+    .full-img:hover { transform: scale(1.01); }
+    .full-img img { border-radius: 6px; }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.92); z-index: 9999;
+      display: none; align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 8px; object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 32px;
+      color: #fff; font-size: 32px; cursor: pointer;
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; background: rgba(255,255,255,0.1);
+      transition: background 0.3s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 60px 0;
+      background: linear-gradient(135deg, #1a2332 0%, #1e2d3d 100%);
+      color: #fff; text-align: center;
+    }
+    .footer h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; margin-bottom: 12px;
+    }
+    .footer p { color: rgba(255,255,255,0.4); font-size: 14px; }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.delay-1 { transition-delay: 0.1s; }
+    .fade-up.delay-2 { transition-delay: 0.2s; }
+    .fade-up.delay-3 { transition-delay: 0.3s; }
+
+    /* ===== HAMBURGER ===== */
+    .nav-hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px;
+      background: none; border: none; cursor: pointer; padding: 6px; z-index: 1001;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #1a1a2e; border-radius: 2px; transition: all 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ===== PROJECT CARDS ===== */
+    .project-cards .project-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.12) !important; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 968px) {
+      .container { padding: 0 24px; }
+      .nav { padding: 14px 24px; }
+      .nav-hamburger { display: flex; }
+      .nav-left, .nav-right { display: none; }
+      .project-cards { grid-template-columns: 1fr !important; }
+      .nav-left.open {
+        display: flex; position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+        flex-direction: column; align-items: center; justify-content: center;
+        gap: 24px; z-index: 1000;
+      }
+      .nav-left.open .dropdown-menu {
+        position: static; opacity: 1; visibility: visible;
+        transform: none; box-shadow: none; border: none; text-align: center;
+      }
+      .nav-left.open a { font-size: 18px; }
+      .hero .container { grid-template-columns: 1fr !important; gap: 40px; }
+      .hero-visual { transform: none !important; }
+      .phase-grid { grid-template-columns: 1fr; direction: ltr !important; }
+      .step-grid, .gif-grid { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { gap: 24px; }
+      .user-quotes { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <div class="dropdown">
+      <button class="dropdown-trigger">
+        PROJECTS
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dropdown-menu">
+        <a href="../Meltwater/">1. Meltwater</a>
+        <a href="../Weee/" style="font-weight: 600; color: #1a1a2e;">2. Weee!</a>
+        <a href="../Bogo/">3. Bogo</a>
+        <a href="../ClassPass/">4. ClassPass</a>
+        <!-- <a href="../others.html">5. Others</a> -->
+      </div>
+    </div>
+    <a class="nav-item" href="https://drive.google.com/file/d/1woS_2U2Smxh6nN60pylJIfqOGq95BqWJ/view?usp=sharing" target="_blank" rel="noopener">RESUME</a>
+  </div>
+  <div class="nav-logo"><a href="../index.html"><img src="../images/logo.png" alt="Xuan Li" style="height: 50px;"></a></div>
+  <div class="nav-right">
+    <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:xuanlidesign@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="overview">
+  <div class="container" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+    <div style="position: relative; z-index: 2;">
+      <div class="hero-eyebrow"><span class="dot"></span> Work Project &mdash; 2021 &mdash; Released</div>
+      <h1>Redesigning <span class="highlight">"Share Your Order"</span></h1>
+      <p class="hero-sub">Weee! is a California-based tech startup that offers an online grocery site and app for Asian specialty products and staples.</p>
+      <p style="font-size: 17px; color: #1a1a2e; line-height: 1.7; max-width: 480px; margin-bottom: 36px;"><strong>"Sharing your order" is one of the most important features on Weee! that generates <span style="background: linear-gradient(to top, rgba(61,160,107,0.25) 30%, transparent 30%); padding: 0 2px;">over 12% of total revenue</span> per year.</strong></p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-number">12%+</div>
+          <div class="hero-stat-label">Total Revenue</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">33%</div>
+          <div class="hero-stat-label">User Satisfaction</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/08243bed-80fa-436d-b913-5e11d186b736/1+1225471600.png" alt="Weee! Share Your Order">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT META -->
+<section class="overview" style="background: #fff; padding: 100px 0;">
+  <div class="container">
+    <div class="section-label fade-up">Achievement</div>
+    <div class="section-title fade-up">Measurable Results</div>
+    <!-- Achievement Metrics -->
+    <div class="fade-up" style="margin-top: 32px;">
+      <div style="margin-bottom: 8px; font-size: 16px; font-weight: 700; color: #1a1a2e;">Total revenue increased</div>
+      <div style="font-size: 42px; font-weight: 800; color: #3DA06B; margin-bottom: 40px;">$6M</div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;">
+        <!-- Sharing Rate -->
+        <div class="metric-divider">
+          <div style="font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px;">Total sharing rate</div>
+          <div style="font-size: 32px; font-weight: 800; color: #3DA06B; line-height: 1;">25.5%</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px; margin-bottom: 20px;">The total sharing rate increased</div>
+          <svg viewBox="0 0 200 120" style="width: 100%; height: auto;">
+            <text x="80" y="12" font-size="11" fill="#3DA06B" font-weight="600">32.9%</text>
+            <polyline points="15,92 72,55 128,38 185,18" fill="none" stroke="#3DA06B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15" cy="92" r="7" fill="#3DA06B"/><circle cx="72" cy="55" r="7" fill="#3DA06B"/><circle cx="128" cy="38" r="7" fill="#3DA06B"/><circle cx="185" cy="18" r="7" fill="#3DA06B"/>
+            <text x="5" y="110" font-size="11" fill="#3DA06B" font-weight="600">26.2%</text>
+          </svg>
+        </div>
+        <!-- Follow-buy Rate -->
+        <div class="metric-divider">
+          <div style="font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px;">Follow-buy rate</div>
+          <div style="font-size: 32px; font-weight: 800; color: #3DA06B; line-height: 1;">34.7%</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px; margin-bottom: 20px;">The follow-buy rate increased</div>
+          <svg viewBox="0 0 200 120" style="width: 100%; height: auto;">
+            <text x="145" y="12" font-size="11" fill="#3DA06B" font-weight="600">12.8%</text>
+            <polyline points="15,90 72,60 128,40 185,22" fill="none" stroke="#3DA06B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15" cy="90" r="7" fill="#3DA06B"/><circle cx="72" cy="60" r="7" fill="#3DA06B"/><circle cx="128" cy="40" r="7" fill="#3DA06B"/><circle cx="185" cy="22" r="7" fill="#3DA06B"/>
+            <text x="5" y="110" font-size="11" fill="#3DA06B" font-weight="600">9.5%</text>
+          </svg>
+        </div>
+        <!-- Community Users -->
+        <div class="metric-divider">
+          <div style="font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px;">Community users increased</div>
+          <div style="font-size: 32px; font-weight: 800; color: #3DA06B; line-height: 1;">15K</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px; margin-bottom: 20px;">People joined the Facebook community</div>
+          <svg viewBox="0 0 200 120" style="width: 100%; height: auto;">
+            <text x="160" y="12" font-size="11" fill="#3DA06B" font-weight="600">15K</text>
+            <polyline points="15,92 72,55 128,28 185,22" fill="none" stroke="#3DA06B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15" cy="92" r="7" fill="#3DA06B"/><circle cx="72" cy="55" r="7" fill="#3DA06B"/><circle cx="128" cy="28" r="7" fill="#3DA06B"/><circle cx="185" cy="22" r="7" fill="#3DA06B"/>
+            <text x="5" y="110" font-size="11" fill="#3DA06B" font-weight="600">2K</text>
+          </svg>
+        </div>
+        <!-- Change Language -->
+        <div>
+          <div style="font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px;">Change language</div>
+          <div style="font-size: 32px; font-weight: 800; color: #3DA06B; line-height: 1;">15.2%</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px; margin-bottom: 20px;">Users change the language before sharing</div>
+          <svg viewBox="0 0 200 120" style="width: 100%; height: auto;">
+            <text x="140" y="12" font-size="11" fill="#3DA06B" font-weight="600">15.2%</text>
+            <polyline points="15,95 72,70 128,40 185,22" fill="none" stroke="#3DA06B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15" cy="95" r="7" fill="#3DA06B"/><circle cx="72" cy="70" r="7" fill="#3DA06B"/><circle cx="128" cy="40" r="7" fill="#3DA06B"/><circle cx="185" cy="22" r="7" fill="#3DA06B"/>
+            <text x="5" y="113" font-size="11" fill="#3DA06B" font-weight="600">0%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT PREVIEW -->
+<section class="phase alt" id="preview" style="background: #E0F7FA;">
+  <div class="container" style="text-align: center;">
+    <div class="section-label fade-up">Product Preview</div>
+    <div class="section-title fade-up">Before &amp; After</div>
+    <p class="section-desc fade-up" style="margin: 0 auto;">In the following graphic, you can view the mobile application both prior and after the product redesign. To interact with the image, simply click and drag the icon in the middle.</p>
+    <div class="ba-slider-wrap fade-up" id="baSlider">
+      <img class="ba-before" src="https://images.squarespace-cdn.com/content/5eabab6245dfc53b7400201e/1602434090194-HQ0OAIH6Q0VIJAU8E54T/Before-10.jpg?format=2500w&content-type=image%2Fjpeg" alt="Before redesign">
+      <img class="ba-after" src="https://images.squarespace-cdn.com/content/5eabab6245dfc53b7400201e/1602434125486-68M1GZKFCWF2SE9SBBF9/After-10.jpg?format=2500w&content-type=image%2Fjpeg" alt="After redesign">
+      <div class="ba-slider-handle" id="baHandle"></div>
+      <span style="position: absolute; top: 16px; left: 16px; z-index: 4; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: #d1fae5; color: #059669;">After</span>
+      <span style="position: absolute; top: 16px; right: 16px; z-index: 4; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: #fee2e2; color: #dc2626;">Before</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1 -->
+<section class="phase">
+  <div class="container">
+    <div class="section-label fade-up">Section 1</div>
+    <div class="section-title fade-up">What is "Share your Order"?</div>
+    <div class="fade-up" style="font-size: 16px; color: #555; line-height: 1.8; max-width: 700px;">
+      <p>What if you easily could share your order with your friends? Imagine being able to provide them a great discount on the same products you just purchased!</p>
+      <p style="margin-top: 12px;">Meanwhile, as an inviter, you could get a bonus rebate from Weee! to use on your next order. How exciting it is!</p>
+    </div>
+    <div class="fade-up delay-1" style="margin-top: 40px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); cursor: pointer; max-width: 80%; margin-left: auto; margin-right: auto;" onclick="openLightbox(this)">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604196067035-85VC1T3HTVMSBGHXD2BU/Group+13109+%281%29.png" alt="Share your order illustration">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="phase" id="data" style="background: #F7F8FA;">
+  <div class="container">
+    <div class="section-label fade-up">Section 2</div>
+    <div class="section-title fade-up">Data Analysis</div>
+
+    <h3 class="sub-heading fade-up" style="margin-top: 16px;">Background Information</h3>
+    <ol class="numbered-list fade-up" style="list-style: none;">
+      <li><span class="num">1</span>Weee! had a 700% increase in revenue during the Covid-19, which generated a lot of new users.</li>
+      <li><span class="num">2</span>Weee! closed the "Share your order" feature for three months and reduced the rebates' value.</li>
+      <li><span class="num">3</span>Today, the total sharing rate still remains lower for both new users and old users.</li>
+    </ol>
+
+    <h3 class="sub-heading fade-up" style="margin-top: 56px;">Current Data</h3>
+    <div class="fade-up" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px;">
+      <!-- Total Sharing Rate -->
+      <div style="background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04);">
+        <div style="font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; text-align: center;">Total Sharing Rate</div>
+        <svg viewBox="-10 -5 230 145" style="width: 100%; overflow: visible;">
+          <polyline points="25,45 65,38 105,55" fill="none" stroke="#3B8EAD" stroke-width="2.5" stroke-linejoin="round"/>
+          <polyline points="105,55 105,125" fill="none" stroke="#3B8EAD" stroke-width="2.5"/>
+          <polyline points="105,125 140,130 170,125 200,122" fill="none" stroke="#3B8EAD" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="25" cy="45" r="7" fill="#3B8EAD"/><circle cx="65" cy="38" r="7" fill="#3B8EAD"/><circle cx="105" cy="55" r="7" fill="#3B8EAD"/>
+          <circle cx="105" cy="125" r="7" fill="#3B8EAD"/><circle cx="140" cy="130" r="7" fill="#3B8EAD"/><circle cx="170" cy="125" r="7" fill="#3B8EAD"/><circle cx="200" cy="122" r="7" fill="#3B8EAD"/>
+          <text x="62" y="28" font-size="13" font-weight="700" fill="#3B8EAD" font-family="Inter, sans-serif">28.7%</text>
+          <text x="155" y="115" font-size="13" font-weight="700" fill="#3B8EAD" font-family="Inter, sans-serif">26.2%</text>
+        </svg>
+      </div>
+      <!-- First Order Sharing Rate -->
+      <div style="background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04);">
+        <div style="font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; text-align: center;">First Order Sharing Rate</div>
+        <svg viewBox="-10 -5 230 145" style="width: 100%; overflow: visible;">
+          <polyline points="25,40 65,32 105,48" fill="none" stroke="#3DA06B" stroke-width="2.5" stroke-linejoin="round"/>
+          <polyline points="105,48 105,125" fill="none" stroke="#3DA06B" stroke-width="2.5"/>
+          <polyline points="105,125 140,112 170,95 200,88" fill="none" stroke="#3DA06B" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="25" cy="40" r="7" fill="#3DA06B"/><circle cx="65" cy="32" r="7" fill="#3DA06B"/><circle cx="105" cy="48" r="7" fill="#3DA06B"/>
+          <circle cx="105" cy="125" r="7" fill="#3DA06B"/><circle cx="140" cy="112" r="7" fill="#3DA06B"/><circle cx="170" cy="95" r="7" fill="#3DA06B"/><circle cx="200" cy="88" r="7" fill="#3DA06B"/>
+          <text x="62" y="22" font-size="13" font-weight="700" fill="#3DA06B" font-family="Inter, sans-serif">36.9%</text>
+          <text x="155" y="82" font-size="13" font-weight="700" fill="#3DA06B" font-family="Inter, sans-serif">31.3%</text>
+        </svg>
+      </div>
+      <!-- Follow-buy Rate -->
+      <div style="background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04);">
+        <div style="font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; text-align: center;">Follow-buy Rate</div>
+        <svg viewBox="-10 -5 230 145" style="width: 100%; overflow: visible;">
+          <polyline points="25,65 65,58 105,70" fill="none" stroke="#00BCD4" stroke-width="2.5" stroke-linejoin="round"/>
+          <polyline points="105,70 105,125" fill="none" stroke="#00BCD4" stroke-width="2.5"/>
+          <polyline points="105,125 140,122 170,115 200,110" fill="none" stroke="#00BCD4" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="25" cy="65" r="7" fill="#00BCD4"/><circle cx="65" cy="58" r="7" fill="#00BCD4"/><circle cx="105" cy="70" r="7" fill="#00BCD4"/>
+          <circle cx="105" cy="125" r="7" fill="#00BCD4"/><circle cx="140" cy="122" r="7" fill="#00BCD4"/><circle cx="170" cy="115" r="7" fill="#00BCD4"/><circle cx="200" cy="110" r="7" fill="#00BCD4"/>
+          <text x="62" y="48" font-size="13" font-weight="700" fill="#00BCD4" font-family="Inter, sans-serif">10.2%</text>
+          <text x="160" y="105" font-size="13" font-weight="700" fill="#00BCD4" font-family="Inter, sans-serif">9.5%</text>
+        </svg>
+      </div>
+    </div>
+
+    <h3 class="sub-heading fade-up" style="margin-top: 56px;">Three Hypotheses Based on Data Analysis</h3>
+    <div class="fade-up" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; max-width: 70%; margin-left: auto; margin-right: auto;">
+      <div style="text-align: center; padding: 32px 20px;">
+        <div style="width: 104px; height: 104px; border-radius: 50%; background: #3B8EAD; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+          <svg width="47" height="47" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div style="font-size: 16px; font-weight: 700; color: #3B8EAD; line-height: 1.4;">Lack of<br>communities</div>
+      </div>
+      <div style="text-align: center; padding: 32px 20px;">
+        <div style="width: 104px; height: 104px; border-radius: 50%; background: #3DA06B; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+          <svg width="47" height="47" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div style="font-size: 16px; font-weight: 700; color: #3DA06B; line-height: 1.4;">Not engaging or don't<br>know how to use it</div>
+      </div>
+      <div style="text-align: center; padding: 32px 20px;">
+        <div style="width: 104px; height: 104px; border-radius: 50%; background: #00BCD4; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+          <svg width="47" height="47" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div style="font-size: 16px; font-weight: 700; color: #00BCD4; line-height: 1.4;">The flow has<br>some problems</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="phase" id="redesign">
+  <div class="container">
+    <div class="section-label fade-up">Section 3</div>
+    <div class="section-title fade-up">Why Do We Need to Redesign?</div>
+
+    <h3 class="sub-heading fade-up">Users Need</h3>
+    <ol class="numbered-list fade-up" style="list-style: none;">
+      <li><span class="num">1</span>The "Share your order" design has not been improved in 3+ years.</li>
+      <li><span class="num">2</span>In the monthly satisfaction surveys, only <strong>33% of users</strong> expressed satisfaction with the current experience. However, the average satisfaction rate remained at <strong>52%</strong>.</li>
+      <li><span class="num">3</span>Users often request updated user experience features and appealing visual designs. The following list includes some feedback from users in the latest survey:</li>
+    </ol>
+
+    <div class="user-quotes fade-up" style="margin-top: 28px;">
+      <div class="user-quote">"Too much information to look at."</div>
+      <div class="user-quote">"It doesn't look attractive for me!"</div>
+      <div class="user-quote">"The design is outdated."</div>
+    </div>
+
+    <h3 class="sub-heading fade-up" style="margin-top: 56px;">Impact Perspective</h3>
+    <div class="fade-up" style="font-size: 16px; color: #555; line-height: 1.8; max-width: 800px;">
+      <p>This perspective begins directly after the purchase flow and contributes roughly <strong>12% of total revenue</strong>.</p>
+      <p style="margin-top: 12px;">Improvements to the "Share your order" will have the following impacts:</p>
+      <ul style="margin-top: 10px; padding-left: 24px;">
+        <li style="margin-bottom: 6px;">Increase user sharing rate</li>
+        <li>Increase purchase rate and revenue</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="section-label fade-up">Section 4 &mdash; Problem Statement</div>
+    <p class="problem-quote fade-up">"How might we redesign the 'Share your order' experience with clear information architecture and engaging experience for the users and also increase user sharing rate and total revenue?"</p>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="phase">
+  <div class="container">
+    <div class="section-label fade-up">Section 5</div>
+    <div class="section-title fade-up">Prioritize the Opportunities</div>
+    <div class="fade-up" style="font-size: 16px; color: #555; line-height: 1.8; max-width: 800px;">
+      <p>Based on analysis data, it is best to prioritize the sharing experience in the progress flow for first-time inviters and second-time inviters.</p>
+      <p style="margin-top: 14px; font-weight: 700; color: #1a1a2e;">Three reasons to prioritize the "sharing in the progress" experience:</p>
+    </div>
+    <ol class="numbered-list fade-up" style="list-style: none; margin-top: 20px;">
+      <li><span class="num">1</span>Directly related to sharing rate and purchase rate.</li>
+      <li><span class="num">2</span>Participants expressed a lot of pain points here.</li>
+      <li><span class="num">3</span>It can be used for both new users and current users, which could increase the sharing funnel.</li>
+    </ol>
+    <div class="full-img fade-up" style="margin-top: 40px; max-width: 80%; margin-left: auto; margin-right: auto;" onclick="openLightbox(this)">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1613503259937-U8PITWLL10473RRQINTT/Screen+Shot+2021-02-16+at+11.20.40+AM.png" alt="Opportunity prioritization">
+    </div>
+    <h3 class="sub-heading fade-up" style="margin-top: 56px;">Journey Map from the Users Interview</h3>
+    <div class="full-img fade-up" onclick="openLightbox(this)" style="max-width: 80%; margin: 0 auto;">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1609836651909-G8WJ0BNW3TF5E5TI075K/image-asset.png" alt="Journey map">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="phase" style="background: #F7F8FA;">
+  <div class="container">
+    <div class="section-label fade-up">Section 6</div>
+    <div class="section-title fade-up">Use User Research Findings to Guide the Product Direction</div>
+    <div class="full-img fade-up" style="margin-top: 40px; max-width: 80%; margin-left: auto; margin-right: auto;" onclick="openLightbox(this)">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610428858444-FG6E5A7L28CES6AAFE2N/Group+13190.png" alt="User research findings">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="phase">
+  <div class="container">
+    <div class="section-label fade-up">Section 7</div>
+    <div class="section-title fade-up">Brainstorming with Team Members</div>
+    <div class="fade-up" style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px;">
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Tell people how to earn more</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Pay more for first time users</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Provide users the way to join the group</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">How much the other people earned?</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Just ask them to do it again</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Automatically share</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Share different group once</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">People could see the sharing instantly</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Guide the users at the beginning</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Give them more if they reach the goal</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Let people see other people&rsquo;s sharing</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Tell people how much the other people earned</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Tell people how to earn the money</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Skip this step</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Tell people how to share step by step</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Tell people how to share step by step</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">People can select language when open the link</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Maybe people can select the language to share?</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Provide more options to share</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Community helps people to earn more</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Let people see other people&rsquo;s sharing</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Ranking list</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Get extra money for the first time users</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Show them how many products they&rsquo;ve selected</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Highlight the money they could earned</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Let people preview a content before sharing</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Reorganized the options based on system language</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Automatic sharing based on the behaviors</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Like play a game</div>
+      <div style="padding: 16px; background: #E0F7FA; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1a1a2e; min-height: 90px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.4;">Show all the products they could share</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="phase alt" style="background: #F7F8FA;">
+  <div class="container">
+    <div class="section-label fade-up">Section 8</div>
+    <div class="section-title fade-up">Set up Goals to Measure the Success</div>
+
+    <h3 class="sub-heading fade-up">Goals for the Entire Flow</h3>
+    <ol class="numbered-list fade-up" style="list-style: none;">
+      <li><span class="num">1</span>How to make users share more?</li>
+      <li><span class="num">2</span>How to make users earn more?</li>
+    </ol>
+
+    <h3 class="sub-heading fade-up" style="margin-top: 56px;">Goals for Each Step</h3>
+    <div class="step-grid fade-up">
+      <div class="step-card">
+        <div class="step-badge">Step 1</div>
+        <h3>Order Successful Page</h3>
+        <img src="goals-1.png" alt="Step 1: Order successful goals" style="border-radius: 8px; margin-top: 12px; max-width: 234px; margin-left: auto; margin-right: auto;">
+        <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Clearly communicate the rebate value proposition</li>
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Motivate users to enter the sharing flow</li>
+          <li style="padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Maximize &ldquo;I want free&rdquo; click-through rate</li>
+        </ul>
+      </div>
+      <div class="step-card">
+        <div class="step-badge">Step 2</div>
+        <h3>Select Products to Share</h3>
+        <img src="goals-2.png" alt="Step 2: Select products goals" style="border-radius: 8px; margin-top: 12px; max-width: 234px; margin-left: auto; margin-right: auto;">
+        <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Help users understand the Select &rarr; Share &rarr; Rebates process</li>
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Encourage users to select more products to increase rebate</li>
+          <li style="padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Show clear pricing and potential rebate amounts</li>
+        </ul>
+      </div>
+      <div class="step-card">
+        <div class="step-badge">Step 3</div>
+        <h3>Share Menu</h3>
+        <img src="goals-3.png" alt="Step 3: Share menu goals" style="border-radius: 8px; margin-top: 12px; max-width: 234px; margin-left: auto; margin-right: auto; background: transparent; border: none; box-shadow: none;">
+        <ul style="font-size: 13px; color: #555; line-height: 1.7; list-style: none; padding: 0; margin-top: 16px;">
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Provide multiple sharing channels (WeChat, Moments, Facebook)</li>
+          <li style="padding-left: 16px; position: relative; margin-bottom: 6px;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Minimize drop-off at the final sharing step</li>
+          <li style="padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: #00BCD4; font-weight: 700;">&bull;</span>Make the sharing action as frictionless as possible</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="phase" id="testing">
+  <div class="container">
+    <div class="section-label fade-up">Section 9</div>
+    <div class="section-title fade-up">Usability Testing Results for the Different Versions</div>
+
+    <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 40px; margin-bottom: 24px;">Step One: Order Successful Page</h3>
+    <div class="full-img fade-up" onclick="openLightbox(this)">
+      <img src="step-1.png" alt="Testing: Order successful">
+    </div>
+
+    <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Step Two: Select Products to Share</h3>
+    <div class="full-img fade-up" onclick="openLightbox(this)">
+      <img src="step-2.png" alt="Testing: Select products">
+    </div>
+
+    <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Step Three: Share Menu</h3>
+    <div class="full-img fade-up" onclick="openLightbox(this)">
+      <img src="step-3.png" alt="Testing: Share menu">
+    </div>
+    <h3 class="fade-up" style="font-size: 22px; font-weight: 700; margin-top: 56px; margin-bottom: 24px;">Add Two Steps for the Entire Flow</h3>
+    <div class="full-img fade-up" onclick="openLightbox(this)">
+      <img src="step-4.png" alt="Additional flow steps">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10 -->
+<section class="testing-section">
+  <div class="container">
+    <div class="section-label fade-up">Section 10</div>
+    <div class="section-title fade-up">Previous Design VS Final Design</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 24px;">
+      <p class="section-desc fade-up">After the previous testing, another iteration was performed. The results of this iteration helped plan for usability testing with four additional participants. The purpose of this test was to ask them to share their purchase orders. Based on their feedback, the final version of the design was delivered. All designs were instrumental in helping meet the project's goals and ensuring outstanding performance after launching.</p>
+      <div class="test-table-wrap fade-up">
+        <div style="padding: 20px 24px 12px; background: rgba(61,160,107,0.06); border-bottom: 2px solid rgba(61,160,107,0.12);">
+          <h4 style="font-size: 16px; font-weight: 700; color: #3DA06B; text-align: center; margin: 0;">Final Usability Testing Results (4 Users)</h4>
+        </div>
+        <table class="test-table">
+          <thead>
+            <tr><th>Share your order project's goal</th><th>Clearly information</th><th>Engaging and Intuitive</th><th>Simply and clear layout</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Result</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+              <td><span class="result-pass">&#10003;</span> 4/4 users</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="full-img fade-up" style="margin-top: 40px; border-radius: 24px; overflow: hidden;" onclick="openLightbox(this)">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1610429489536-8AC9K8K8YE27BMDVZH6E/iMac+-+2.png" alt="Desktop mockup">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11 -->
+<section class="phase" id="interactions" style="background: linear-gradient(135deg, #1a2332 0%, #1e2d3d 100%); color: #fff;">
+  <div class="container">
+    <div class="section-label fade-up" style="color: #66BB6A;">Section 11</div>
+    <div class="section-title fade-up" style="color: #fff;">Interactions</div>
+  </div>
+  <div style="margin: 48px auto 0; max-width: 80%; padding: 0;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;">
+      <div class="fade-up" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px;">Order Successful</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604207188075-6D4V2H7GWRC1P4K5D70L/1-2-2+2.gif" alt="Order successful" style="width: 150%; max-width: none; margin-left: -25%;">
+      </div>
+      <div class="fade-up delay-1" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px;">Select Products to Share</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604297713353-256J1UPMFJ17QM11LHTP/0001-3-2.gif" alt="Select products" style="width: 150%; max-width: none; margin-left: -25%;">
+      </div>
+      <div class="fade-up delay-2" style="text-align: center;">
+        <h4 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px;">Share Menu</h4>
+        <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1604295136817-NWZDZDTRNWLPIACNCKQL/001-4.gif" alt="Share menu" style="width: 150%; max-width: none; margin-left: -25%;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 12 -->
+<section class="phase">
+  <div class="container">
+    <div class="section-label fade-up">Section 12</div>
+    <div class="section-title fade-up">Cross Platforms (iOS and Android)</div>
+    <div class="full-img fade-up" style="margin-top: 40px;" onclick="openLightbox(this)">
+      <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/1634937772246-YPFJ6XD958GHWYA89S5I/Group+14204.png" alt="iOS and Android">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 13 -->
+<section class="phase" id="reflections" style="background: #f7f7f7;">
+  <div class="container">
+    <div class="section-label fade-up">Section 13</div>
+    <div class="section-title fade-up">Reflections</div>
+    <div class="fade-up" style="max-width: 700px;">
+      <p style="font-size: 16px; color: #555; line-height: 1.8;">Bringing people close together is meaningful. There are three main lessons learned from this project:</p>
+      <ul style="margin-top: 24px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 18px;">
+        <li style="font-size: 16px; color: #555; line-height: 1.8; padding-left: 20px; position: relative;">
+          <span style="position: absolute; left: 0; color: #3B8EAD; font-weight: 700;">&bull;</span>
+          <strong>User research and data</strong> are always good friends to a product designer.
+        </li>
+        <li style="font-size: 16px; color: #555; line-height: 1.8; padding-left: 20px; position: relative;">
+          <span style="position: absolute; left: 0; color: #3DA06B; font-weight: 700;">&bull;</span>
+          <strong>A refined prototype</strong> is a great way to communicate with the developer team and benefits the whole team.
+        </li>
+        <li style="font-size: 16px; color: #555; line-height: 1.8; padding-left: 20px; position: relative;">
+          <span style="position: absolute; left: 0; color: #3B8EAD; font-weight: 700;">&bull;</span>
+          <strong>God is in the finer details.</strong> Iteration is crucial for a better design!
+        </li>
+      </ul>
+    </div>
+    <div class="fade-up" style="margin-top: 40px; text-align: center;">
+      <img src="reflection.png" alt="Good design is like a bridge, bringing people closer together" style="max-width: 100%; width: 1000px; border-radius: 12px;">
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close">&times;</div>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+
+<!-- EXPLORE OTHER PROJECTS -->
+<section style="padding: 100px 0; background: #1a1a2e;">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div class="section-label" style="color: #FF9800;">More Work</div>
+      <div class="section-title" style="color: #fff;">Explore Other Projects</div>
+    </div>
+    <div class="project-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <!-- Meltwater -->
+      <a href="../Meltwater/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../images/meltwater.png" alt="Meltwater" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Enterprise SaaS</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Meltwater</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">AI Newsletter &amp; media intelligence redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- BOGO -->
+      <a href="../Bogo/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="https://images.squarespace-cdn.com/content/v1/5eabab6245dfc53b7400201e/14760955-9edd-4be9-95bd-f75ca9b9067f/4.png" alt="BOGO" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Live Video</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">BOGO</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">Live video streaming app for real-time info.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+      <!-- ClassPass -->
+      <a href="../ClassPass/" class="project-card" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; transition: transform 0.3s, background 0.3s; display: block;">
+        <div style="overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,255,255,0.04);">
+          <img src="../ClassPass/images/classpass-hero.png" alt="ClassPass" style="width: 88%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+        </div>
+        <div style="padding: 24px 24px 28px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FF9800; margin-bottom: 10px;">Fitness &amp; Wellness</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">ClassPass</div>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0 0 16px 0;">Mobile exploration, search &amp; checkout redesign.</p>
+          <div style="font-size: 13px; font-weight: 600; color: #FF9800;">Read case study &rarr;</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top: 1px solid rgba(0,0,0,0.08); padding: 40px 48px;">
+  <div style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+    <p style="font-size: 13px; color: #777; font-weight: 500;">&copy; 2026 Xuan Li</p>
+    <div style="display: flex; gap: 12px;">
+      <a href="https://www.linkedin.com/in/xuanlisf/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 50%; transition: all 0.2s; color: inherit; text-decoration: none;">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:xuanlidesign@gmail.com" aria-label="Email" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 50%; transition: all 0.2s; color: inherit; text-decoration: none;">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('navHamburger');
+  const navLeft = document.querySelector('.nav-left');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLeft.classList.toggle('open');
+  });
+  navLeft.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLeft.classList.remove('open');
+    });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Lightbox
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Before/After slider
+  const slider = document.getElementById('baSlider');
+  const handle = document.getElementById('baHandle');
+  if (slider && handle) {
+    let isDragging = false;
+    const updateSlider = (x) => {
+      const rect = slider.getBoundingClientRect();
+      let pos = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const pct = pos * 100;
+      handle.style.left = pct + '%';
+      slider.querySelector('.ba-after').style.clipPath = 'inset(0 0 0 ' + pct + '%)';
+    };
+    slider.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+    window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    slider.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); });
+    window.addEventListener('touchend', () => { isDragging = false; });
+  }
+</script>
+
+</body>
+</html>
